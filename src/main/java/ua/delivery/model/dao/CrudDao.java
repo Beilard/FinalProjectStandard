@@ -1,11 +1,14 @@
 package ua.delivery.model.dao;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-public interface CrudDao<T> {
-    void create(T item);
-    List<T> findById(Integer id);
+public interface CrudDao<T, ID> {
+    void save(T item);
+    Optional<T> findById(ID id);
     List<T> findAll();
-    void update(Integer id, T item);
-    boolean delete (Integer id);
+    void update(ID id, T item);
+    void deleteById(ID id);
+    void deleteAllById(Set<ID> ids);
 }
