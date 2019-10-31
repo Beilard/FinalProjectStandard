@@ -1,6 +1,10 @@
 package ua.delivery.model.dao;
 
-import ua.delivery.model.entity.User;
+import ua.delivery.model.domain.User;
 
-public interface UserDao extends CrudDao<User> {
+import java.util.Optional;
+
+public interface UserDao extends CrudDao<User, Long> {
+    Optional<User> findByEmail(String email);
+
 }
