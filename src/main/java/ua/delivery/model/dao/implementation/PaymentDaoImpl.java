@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implements PaymentDao {
-    private static final String FIND_BY_ID_QUERY = "SELECT * from addresses WHERE id = ?";
+    private static final String FIND_BY_ID_QUERY = "SELECT * from payment WHERE id = ?";
     private static final String SAVE_QUERY =
-            "INSERT INTO addresses(id, email, password, name, surname, date_of_birth, role)";
-    private static final String FIND_ALL_QUERY = "SELECT * FROM addresses";
-    private static final String DELETE_BY_ID_QUERY = "DELETE FROM addresses Where id = ?";
+            "INSERT INTO payments(order_id, amount, date, is_complete)";
+    private static final String FIND_ALL_QUERY = "SELECT * FROM payments";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM payments Where id = ?";
     private static final String UPDATE_QUERY =
-            "UPDATE addresses SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
+            "UPDATE payments SET order_id = ?, amount = ?, date = ?, is_complete =? WHERE id= ?";
 
     public PaymentDaoImpl(DBConnector connector) {
         super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
@@ -23,16 +23,26 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
 
     @Override
     protected PaymentEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-        return null;
+        return PaymentEntity.builder()
+                .withId(resultSet.getLong("id"))
+                .withOrderId(resultSet.getLong("order_id"))
+                .withAmount(resultSet.getDouble("amount"))
+                .withDate(resultSet.getDate("date"))
+                .withComplete(resultSet.getBoolean("is_complete"))
+                .build();
     }
 
     @Override
-    protected void insert(PreparedStatement preparedStatement, PaymentEntity entity) throws SQLException {
-
+    protected void insert(PreparedStatement preparedStatement, PaymentEntity item) throws SQLException {
+        preparedStatement.setLong(2, item.getOrderId());
+        preparedStatement.setDouble(3, item.getAmount());
+        preparedStatement.setDate(4, item.getDate());
+        preparedStatement.setBoolean(5, item.isComplete());
     }
 
     @Override
     protected void updateValues(PreparedStatement preparedStatement, PaymentEntity entity) throws SQLException {
-
+        insert(preparedStatement, entity);
+        preparedStatement.setLong(1, entity.getId());
     }
 }

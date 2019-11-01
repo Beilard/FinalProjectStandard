@@ -4,14 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.UserDao;
-import ua.delivery.model.dao.exception.DataBaseRuntimeException;
-import ua.delivery.model.domain.User;
-import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.entity.UserCredentialsEntity;
 import ua.delivery.model.entity.UserEntity;
 
 import java.sql.*;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -44,18 +40,18 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
 
     @Override
     protected void insert(PreparedStatement preparedStatement, UserEntity item) throws SQLException {
-        preparedStatement.setString(1, item.getUserCredentials().getEmail());
-        preparedStatement.setString(2, item.getUserCredentials().getPassword());
-        preparedStatement.setString(3, item.getName());
-        preparedStatement.setString(4, item.getSurname());
-        preparedStatement.setDate(5, (Date) item.getDateOfBirth());
-        preparedStatement.setString(6, item.getRole().toString());
+        preparedStatement.setString(2, item.getUserCredentials().getEmail());
+        preparedStatement.setString(3, item.getUserCredentials().getPassword());
+        preparedStatement.setString(4, item.getName());
+        preparedStatement.setString(5, item.getSurname());
+        preparedStatement.setDate(6, (Date) item.getDateOfBirth());
+        preparedStatement.setString(7, item.getRole().toString());
     }
 
     @Override
     protected void updateValues(PreparedStatement preparedStatement, UserEntity entity) throws SQLException {
         insert(preparedStatement, entity);
-        preparedStatement.setLong(7, entity.getId());
+        preparedStatement.setLong(1, entity.getId());
     }
 
 

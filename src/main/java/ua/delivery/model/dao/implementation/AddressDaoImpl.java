@@ -15,7 +15,7 @@ import java.util.Set;
 public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implements AddressDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * from addresses WHERE id = ?";
     private static final String SAVE_QUERY =
-            "INSERT INTO addresses(id, email, password, name, surname, date_of_birth, role)";
+            "INSERT INTO addresses(city, street, building)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM addresses";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM addresses Where id = ?";
     private static final String UPDATE_QUERY =

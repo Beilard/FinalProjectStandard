@@ -1,12 +1,13 @@
 package ua.delivery.model.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class PaymentEntity {
     private final Long id;
     private final Double amount;
-    private final LocalDate date;
+    private final Date date;
     private final boolean isComplete;
     private final Long orderId;
 
@@ -30,7 +31,7 @@ public class PaymentEntity {
         return amount;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -66,7 +67,7 @@ public class PaymentEntity {
     public static class PaymentEntityBuilder {
         private Long id;
         private Double amount;
-        private LocalDate date;
+        private Date date;
         private boolean isComplete;
         private Long orderId;
 
@@ -87,7 +88,7 @@ public class PaymentEntity {
             return this;
         }
 
-        public PaymentEntityBuilder withDate(LocalDate date) {
+        public PaymentEntityBuilder withDate(Date date) {
             this.date = date;
             return this;
         }

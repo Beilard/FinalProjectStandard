@@ -1,5 +1,6 @@
 package ua.delivery.model.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,8 +10,8 @@ public class OrderEntity {
     private final Long paymentId;
     private final Long senderId;
     private final Long receiverId;
-    private final LocalDate sentDate;
-    private final LocalDate receiveDate;
+    private final Date sentDate;
+    private final Date receiveDate;
     private final RouteEntity route;
 
     public OrderEntity(OrderEntityBuilder orderEntityBuilder) {
@@ -41,16 +42,24 @@ public class OrderEntity {
         return paymentId;
     }
 
-    public LocalDate getSentDate() {
+    public Date getSentDate() {
         return sentDate;
     }
 
-    public LocalDate getReceiveDate() {
+    public Date getReceiveDate() {
         return receiveDate;
     }
 
     public RouteEntity getRoute() {
         return route;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public Long getReceiverId() {
+        return receiverId;
     }
 
     @Override
@@ -80,8 +89,8 @@ public class OrderEntity {
         private Long paymentId;
         private Long senderId;
         private Long receiverId;
-        private LocalDate sentDate;
-        private LocalDate receiveDate;
+        private Date sentDate;
+        private Date receiveDate;
         private RouteEntity route;
 
 
@@ -117,12 +126,12 @@ public class OrderEntity {
             return this;
         }
 
-        public OrderEntityBuilder withSentDate(LocalDate sentDate) {
+        public OrderEntityBuilder withSentDate(Date sentDate) {
             this.sentDate = sentDate;
             return this;
         }
 
-        public OrderEntityBuilder withReceiveDate(LocalDate receiveDate) {
+        public OrderEntityBuilder withReceiveDate(Date receiveDate) {
             this.receiveDate = receiveDate;
             return this;
         }

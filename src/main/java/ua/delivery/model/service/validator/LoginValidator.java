@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ua.delivery.model.dao.implementation.UserDaoImpl;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
+import ua.delivery.model.entity.UserEntity;
 import ua.delivery.model.exception.EntityNotFoundException;
 import ua.delivery.model.exception.IncorrectEmailOrPasswordException;
 import ua.delivery.model.exception.InvalidEmailFormatException;
@@ -41,7 +42,7 @@ public class LoginValidator<E> implements Validator<UserCredentials> {
             throw new InvalidEmailFormatException("Email format not supported");
         }
 
-        Optional<User> client = userDao.findByEmail(userCredential.getEmail());
+        Optional<UserEntity> client = userDao.findByEmail(userCredential.getEmail());
 
         if (!(client.isPresent())) {
             logger.error("Client not found!");
