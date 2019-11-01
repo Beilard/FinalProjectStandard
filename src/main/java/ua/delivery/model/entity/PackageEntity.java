@@ -1,16 +1,13 @@
-package ua.delivery.model.domain;
+package ua.delivery.model.entity;
 
-
-import java.io.Serializable;
 import java.util.Objects;
 
-
-public class Package {
+public class PackageEntity {
     private final Long id;
     private final String type;
     private final Double weight;
 
-    public Package(Long id, String type, Double weight) {
+    public PackageEntity(Long id, String type, Double weight) {
         this.id = id;
         this.type = type;
         this.weight = weight;
@@ -36,13 +33,14 @@ public class Package {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Package aPackage = (Package) o;
-        return getType().equals(aPackage.getType()) &&
-                getWeight().equals(aPackage.getWeight());
+        PackageEntity that = (PackageEntity) o;
+        return getId().equals(that.getId()) &&
+                getType().equals(that.getType()) &&
+                getWeight().equals(that.getWeight());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getType(), getWeight());
+        return Objects.hash(getId(), getType(), getWeight());
     }
 }

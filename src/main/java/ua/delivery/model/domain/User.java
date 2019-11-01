@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class User implements Serializable {
-    private static final long serialversionUID = 5L;
+public class User {
     private final Long id;
     private final UserCredentials userCredentials;
     private final String name;

@@ -3,58 +3,44 @@ package ua.delivery.model.dao.implementation;
 import ua.delivery.model.dao.AddressDao;
 import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.domain.Address;
+import ua.delivery.model.entity.AddressEntity;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class AddressDaoImpl extends AbstractCrudDaoImpl<Address> implements AddressDao {
-    private static final String FIND_BY_EMAIL_QUERY = "SELECT * from users WHERE email = ?";
-    private static final String FIND_BY_ID_QUERY = "SELECT * from users WHERE id = ?";
-    private static final String SAVE_USER_QUERY =
-            "INSERT INTO users(id, email, password, name, surname, date_of_birth, role) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String FIND_ALL_QUERY = "SELECT * FROM users";
-    private static final String DELETE_BY_QUERY = "DELETE FROM users Where id = ?";
+public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implements AddressDao {
+    private static final String FIND_BY_ID_QUERY = "SELECT * from addresses WHERE id = ?";
+    private static final String SAVE_QUERY =
+            "INSERT INTO addresses(id, email, password, name, surname, date_of_birth, role)";
+    private static final String FIND_ALL_QUERY = "SELECT * FROM addresses";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM addresses Where id = ?";
+    private static final String UPDATE_QUERY =
+            "UPDATE addresses SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
 
     public AddressDaoImpl(DBConnector connector) {
-        super(connector);
+        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override
-    public void save(Address item) {
-
+    protected AddressEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
+        return new AddressEntity(resultSet.getLong("id"), resultSet.getString("city"),
+                resultSet.getString("street"), resultSet.getInt("building"));
     }
 
     @Override
-    public Optional<Address> findById(Long id) {
-        return findById(id, FIND_BY_ID_QUERY);
+    protected void insert(PreparedStatement preparedStatement, AddressEntity entity) throws SQLException {
+        preparedStatement.setString(2, entity.getCity());
+        preparedStatement.setString(3, entity.getStreet());
+        preparedStatement.setInt(4, entity.getBuildingNumber());
     }
 
     @Override
-    public List<Address> findAll() {
-        return findAll(FIND_ALL_QUERY);
-    }
-
-    @Override
-    public void update(Long aLong, Address item) {
-
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        deleteById(id, DELETE_BY_QUERY);
-    }
-
-    @Override
-    public void deleteAllById(Set<Long> ids) {
-        ids.forEach(this::deleteById);
-    }
-
-    @Override
-    protected Optional<Address> mapResultToEntity(ResultSet resultSet) throws SQLException {
-        return Optional.empty();
+    protected void updateValues(PreparedStatement preparedStatement, AddressEntity entity) throws SQLException {
+        insert(preparedStatement, entity);
+        preparedStatement.setLong(1, entity.getId());
     }
 }

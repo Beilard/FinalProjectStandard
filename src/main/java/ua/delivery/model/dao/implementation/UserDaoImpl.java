@@ -7,78 +7,35 @@ import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.dao.exception.DataBaseRuntimeException;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
+import ua.delivery.model.entity.UserCredentialsEntity;
+import ua.delivery.model.entity.UserEntity;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
+public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDaoImpl.class);
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * from users WHERE email = ?";
     private static final String FIND_BY_ID_QUERY = "SELECT * from users WHERE id = ?";
-    private static final String SAVE_USER_QUERY =
-            "INSERT INTO users(id, email, password, name, surname, date_of_birth, role) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SAVE_QUERY =
+            "INSERT INTO users(email, password, name, surname, date_of_birth, role)";
+    private static final String UPDATE_QUERY =
+            "UPDATE users SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users";
-    private static final String DELETE_BY_QUERY = "DELETE FROM users Where id = ?";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM users Where id = ?";
 
 
     public UserDaoImpl(DBConnector connector) {
-        super(connector);
+        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        try (Connection connection = connector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_EMAIL_QUERY);
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return mapResultToEntity(resultSet);
-        } catch (SQLException e) {
-            LOGGER.error("There is an DB search error when looking by email " + email);
-            throw new DataBaseRuntimeException(e);
-        }
+    public Optional<UserEntity> findByEmail(String email) {
+        return findByStringParam(email, FIND_BY_EMAIL_QUERY);
     }
 
-    @Override
-    public void save(User item) {
-        try (Connection connection = connector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER_QUERY);
-
-            preparedStatement.setLong(1, item.getId());
-            preparedStatement.setString(2, item.getUserCredentials().getEmail());
-            preparedStatement.setString(3, item.getUserCredentials().getPassword());
-            preparedStatement.setString(4, item.getName());
-            preparedStatement.setString(5, item.getSurname());
-            preparedStatement.setDate(6, (Date) item.getDateOfBirth());
-            preparedStatement.setString(7, item.getRole().toString());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            LOGGER.error("An error while creating a user object " + item.getUserCredentials().getEmail());
-            throw new DataBaseRuntimeException(e);
-        }
-    }
-
-    @Override
-    public Optional<User> findById(Long id) {
-        return findById(id, FIND_BY_ID_QUERY);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return findAll(FIND_ALL_QUERY);
-    }
-
-    @Override
-    public void update(Long id, User item) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        deleteById(id, DELETE_BY_QUERY);
-    }
 
     @Override
     public void deleteAllById(Set<Long> ids) {
@@ -86,16 +43,31 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
     }
 
     @Override
-    protected Optional<User> mapResultToEntity(ResultSet resultSet) throws SQLException {
-        return resultSet.next() ?
-                Optional.ofNullable(User.builder()
-                        .withId(resultSet.getLong("id"))
-                        .withName(resultSet.getString("name"))
-                        .withSurname(resultSet.getString("surname"))
-                        .withUserCredentials(new UserCredentials(resultSet.getString("email"), resultSet.getString(("password"))))
-                        .withDateOfBirth(resultSet.getDate("date_of_birth"))
-                        .build())
-                : Optional.empty();
+    protected void insert(PreparedStatement preparedStatement, UserEntity item) throws SQLException {
+        preparedStatement.setString(1, item.getUserCredentials().getEmail());
+        preparedStatement.setString(2, item.getUserCredentials().getPassword());
+        preparedStatement.setString(3, item.getName());
+        preparedStatement.setString(4, item.getSurname());
+        preparedStatement.setDate(5, (Date) item.getDateOfBirth());
+        preparedStatement.setString(6, item.getRole().toString());
+    }
+
+    @Override
+    protected void updateValues(PreparedStatement preparedStatement, UserEntity entity) throws SQLException {
+        insert(preparedStatement, entity);
+        preparedStatement.setLong(7, entity.getId());
+    }
+
+
+    @Override
+    protected UserEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
+        return UserEntity.builder()
+                .withId(resultSet.getLong("id"))
+                .withName(resultSet.getString("name"))
+                .withSurname(resultSet.getString("surname"))
+                .withUserCredentials(new UserCredentialsEntity(resultSet.getString("email"), resultSet.getString(("password"))))
+                .withDateOfBirth(resultSet.getDate("date_of_birth"))
+                .build();
     }
 
 

@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Address implements Serializable {
-    private static final long serialversionUID = 1L;
+public class Address {
     private Long id;
     private String city;
     private String street;

@@ -1,11 +1,9 @@
-package ua.delivery.model.domain;
+package ua.delivery.model.entity;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
-public class Order {
+public class OrderEntity {
     private final Long id;
     private final Long packageId;
     private final Long paymentId;
@@ -13,21 +11,21 @@ public class Order {
     private final Long receiverId;
     private final LocalDate sentDate;
     private final LocalDate receiveDate;
-    private final Route route;
+    private final RouteEntity route;
 
-    public Order(OrderBuilder orderBuilder) {
-        this.id = orderBuilder.id;
-        this.route = orderBuilder.route;
-        this.packageId = orderBuilder.packageId;
-        this.paymentId = orderBuilder.paymentId;
-        this.sentDate = orderBuilder.sentDate;
-        this.receiveDate = orderBuilder.receiveDate;
-        this.senderId = orderBuilder.senderId;
-        this.receiverId = orderBuilder.receiverId;
+    public OrderEntity(OrderEntityBuilder orderEntityBuilder) {
+        this.id = orderEntityBuilder.id;
+        this.route = orderEntityBuilder.route;
+        this.packageId = orderEntityBuilder.packageId;
+        this.paymentId = orderEntityBuilder.paymentId;
+        this.sentDate = orderEntityBuilder.sentDate;
+        this.receiveDate = orderEntityBuilder.receiveDate;
+        this.senderId = orderEntityBuilder.senderId;
+        this.receiverId = orderEntityBuilder.receiverId;
     }
 
-    public static OrderBuilder builder() {
-        return new OrderBuilder();
+    public static OrderEntityBuilder builder() {
+        return new OrderEntityBuilder();
     }
 
     public Long getId() {
@@ -51,7 +49,7 @@ public class Order {
         return receiveDate;
     }
 
-    public Route getRoute() {
+    public RouteEntity getRoute() {
         return route;
     }
 
@@ -63,7 +61,7 @@ public class Order {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Order order = (Order) o;
+        OrderEntity order = (OrderEntity) o;
         return Objects.equals(getPackageId(), order.getPackageId()) &&
                 Objects.equals(getPaymentId(), order.getPaymentId()) &&
                 Objects.equals(getSentDate(), order.getSentDate()) &&
@@ -76,7 +74,7 @@ public class Order {
         return Objects.hash(getPackageId(), getPaymentId(), getSentDate(), getReceiveDate(), getRoute());
     }
 
-    public static class OrderBuilder {
+    public static class OrderEntityBuilder {
         private Long id;
         private Long packageId;
         private Long paymentId;
@@ -84,52 +82,52 @@ public class Order {
         private Long receiverId;
         private LocalDate sentDate;
         private LocalDate receiveDate;
-        private Route route;
+        private RouteEntity route;
 
 
-        public OrderBuilder() {
+        public OrderEntityBuilder() {
         }
 
-        public Order build() {
-            return new Order(this);
+        public OrderEntity build() {
+            return new OrderEntity(this);
         }
 
-        public OrderBuilder withId(Long id) {
+        public OrderEntityBuilder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public OrderBuilder withSenderId(Long senderId) {
+        public OrderEntityBuilder withSenderId(Long senderId) {
             this.senderId = senderId;
             return this;
         }
 
-        public OrderBuilder withReceiverId(Long receiverId) {
+        public OrderEntityBuilder withReceiverId(Long receiverId) {
             this.receiverId = receiverId;
             return this;
         }
 
-        public OrderBuilder withPackageId(Long packageId) {
+        public OrderEntityBuilder withPackageId(Long packageId) {
             this.packageId = packageId;
             return this;
         }
 
-        public OrderBuilder withPaymentId(Long paymentId) {
+        public OrderEntityBuilder withPaymentId(Long paymentId) {
             this.paymentId = paymentId;
             return this;
         }
 
-        public OrderBuilder withSentDate(LocalDate sentDate) {
+        public OrderEntityBuilder withSentDate(LocalDate sentDate) {
             this.sentDate = sentDate;
             return this;
         }
 
-        public OrderBuilder withReceiveDate(LocalDate receiveDate) {
+        public OrderEntityBuilder withReceiveDate(LocalDate receiveDate) {
             this.receiveDate = receiveDate;
             return this;
         }
 
-        public OrderBuilder withRoute(Route route) {
+        public OrderEntityBuilder withRoute(RouteEntity route) {
             this.route = route;
             return this;
         }

@@ -6,60 +6,130 @@ import ua.delivery.model.dao.CrudDao;
 import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.exception.DataBaseRuntimeException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDaoImpl.class);
-    private static final String FIND_BY_QUERY = "";
-    private static final String DELETE_BY_QUERY = "";
+    private static final BiConsumer<PreparedStatement, String> STRING_CONSUMER
+            = (PreparedStatement pr, String param) -> {
+        try {
+            pr.setString(1, param);
+        } catch (SQLException e) {
+            throw new DataBaseRuntimeException(e);
+        }
+    };
 
+    private static final BiConsumer<PreparedStatement, Long> LONG_CONSUMER
+            = (PreparedStatement pr, Long param) -> {
+        try {
+            pr.setLong(1, param);
+        } catch (SQLException e) {
+            throw new DataBaseRuntimeException(e);
+        }
+    };
 
-    protected final DBConnector connector;
+    private final DBConnector connector;
+    private final String saveQuery;
+    private final String findByIdQuery;
+    private final String findAllQuery;
+    private final String updateQuery;
+    private final String deleteByIdQuery;
 
-    public AbstractCrudDaoImpl(DBConnector connector) {
+    public AbstractCrudDaoImpl(DBConnector connector, String saveQuery, String findByIdQuery,
+                               String findAllQuery, String updateQuery, String deleteByIdQuery) {
         this.connector = connector;
+        this.saveQuery = saveQuery;
+        this.findByIdQuery = findByIdQuery;
+        this.findAllQuery = findAllQuery;
+        this.updateQuery = updateQuery;
+        this.deleteByIdQuery = deleteByIdQuery;
     }
 
-    protected Optional<E> findById(Long id, String query) {
-        try (Connection connection = connector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, id);
-            final ResultSet resultSet = preparedStatement.executeQuery();
-            return mapResultToEntity(resultSet);
+    @Override
+    public void save(E entity) {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
+
+            insert(preparedStatement, entity);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("An error occurred while trying to find by id" + id);
-            throw new DataBaseRuntimeException(e);
+            LOGGER.error("Insertion is failed", e);
+            throw new DataBaseRuntimeException("Insertion is failed", e);
         }
     }
 
-    public List<E> findAll(String query) {
-        List<E> entities = new LinkedList<>();
-        try (Connection connection = connector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                entities.add(mapResultToEntity(resultSet).get());
+    @Override
+    public Optional<E> findById(Long id) {
+        return findByLongParam(id, findByIdQuery);
+    }
+
+    @Override
+    public List<E> findAll() {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery)) {
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<E> entities = new ArrayList<>();
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+                return entities;
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL exception while finding all in User DB");
-        }
-        return entities;
-    }
-
-    public void deleteById(Long id, String query) {
-        try (Connection connection = connector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, id);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            LOGGER.error("An error occurred while trying to remove by id");
+            LOGGER.error("There has been an error while trying to find all entities");
             throw new DataBaseRuntimeException(e);
         }
     }
 
-    protected abstract Optional<E> mapResultToEntity(ResultSet resultSet) throws SQLException;
+    @Override
+    public void update(E entity) {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            updateValues(preparedStatement, entity);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Update has failed", e);
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAllById(Set<Long> longs) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected Optional<E> findByLongParam(Long id, String query) {
+        return findByParam(id, query, LONG_CONSUMER);
+    }
+
+    protected Optional<E> findByStringParam(String param, String query) {
+        return findByParam(param, query, STRING_CONSUMER);
+    }
+
+    private <P> Optional<E> findByParam(P param, String query, BiConsumer<PreparedStatement, P> consumer) {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            consumer.accept(preparedStatement, param);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("An error has occurred while find by parameter");
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+
+    protected abstract E mapResultSetToEntity(ResultSet resultSet) throws SQLException;
+
+    protected abstract void insert(PreparedStatement preparedStatement, E entity) throws SQLException;
+
+    protected abstract void updateValues(PreparedStatement preparedStatement, E entity) throws SQLException;
 }

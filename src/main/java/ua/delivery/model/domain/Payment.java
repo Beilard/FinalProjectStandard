@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Payment implements Serializable {
-    private static final long serialversionUID = 3L;
+public class Payment {
     private final Long id;
     private final Double amount;
     private final LocalDate date;
