@@ -2,7 +2,7 @@ package ua.delivery.model.dao.implementation;
 
 import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.PackageDao;
-import ua.delivery.model.entity.AddressEntity;
+
 import ua.delivery.model.entity.PackageEntity;
 
 import java.sql.PreparedStatement;

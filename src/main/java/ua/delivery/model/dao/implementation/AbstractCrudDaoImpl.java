@@ -55,8 +55,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
             insert(preparedStatement, entity);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Insertion is failed", e);
-            throw new DataBaseRuntimeException("Insertion is failed", e);
+            LOGGER.error("Insertion has failed", e);
+            throw new DataBaseRuntimeException("Insertion has failed", e);
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
                 return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
             }
         } catch (SQLException e) {
-            LOGGER.error("An error has occurred while find by parameter");
+            LOGGER.error("An error has occurred while finding by parameter");
             throw new DataBaseRuntimeException(e);
         }
     }
