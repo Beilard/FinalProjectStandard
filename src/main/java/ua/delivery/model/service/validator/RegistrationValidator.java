@@ -9,7 +9,7 @@ import ua.delivery.model.exception.InvalidEmailFormatException;
 
 import java.util.Objects;
 
-public class RegistrationValidator<E> implements Validator<User> {
+public class RegistrationValidator implements Validator<User> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 

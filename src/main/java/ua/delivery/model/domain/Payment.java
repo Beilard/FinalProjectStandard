@@ -6,12 +6,12 @@ import java.util.Objects;
 
 public class Payment {
     private final Long id;
-    private final Double amount;
+    private final long amount;
     private final LocalDate date;
     private final boolean isComplete;
     private final Long orderId;
 
-    public Payment(PaymentBuilder paymentBuilder) {
+    private Payment(PaymentBuilder paymentBuilder) {
         this.id = paymentBuilder.id;
         this.amount = paymentBuilder.amount;
         this.date = paymentBuilder.date;
@@ -27,7 +27,7 @@ public class Payment {
         return id;
     }
 
-    public Double getAmount() {
+    public long getAmount() {
         return amount;
     }
 
@@ -53,7 +53,7 @@ public class Payment {
         }
         Payment payment = (Payment) o;
         return isComplete() == payment.isComplete() &&
-                getAmount().equals(payment.getAmount()) &&
+                getAmount() == payment.getAmount() &&
                 getDate().equals(payment.getDate()) &&
                 getOrderId().equals(payment.getOrderId());
     }
@@ -65,7 +65,7 @@ public class Payment {
 
     public static class PaymentBuilder {
         private Long id;
-        private Double amount;
+        private long amount;
         private LocalDate date;
         private boolean isComplete;
         private Long orderId;
@@ -82,7 +82,7 @@ public class Payment {
             return this;
         }
 
-        public PaymentBuilder withAmount(Double amount) {
+        public PaymentBuilder withAmount(long amount) {
             this.amount = amount;
             return this;
         }

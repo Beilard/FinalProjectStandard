@@ -6,6 +6,7 @@ import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.entity.UserCredentialsEntity;
 import ua.delivery.model.entity.UserEntity;
+import ua.delivery.model.domain.Role;
 
 import java.sql.*;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
             "UPDATE users SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM users Where id = ?";
+    private static final String FIND_BY_SURNAME = "SELECT * FROM users WHERE surname = ?";
 
 
     public UserDaoImpl(DBConnector connector) {
@@ -30,6 +32,11 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
     @Override
     public Optional<UserEntity> findByEmail(String email) {
         return findByStringParam(email, FIND_BY_EMAIL_QUERY);
+    }
+
+    @Override
+    public Optional<UserEntity> findBySurname(String surname) {
+        return findByStringParam(surname, FIND_BY_SURNAME);
     }
 
 
@@ -44,8 +51,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
         preparedStatement.setString(3, item.getUserCredentials().getPassword());
         preparedStatement.setString(4, item.getName());
         preparedStatement.setString(5, item.getSurname());
-        preparedStatement.setDate(6, (Date) item.getDateOfBirth());
-        preparedStatement.setString(7, item.getRole().toString());
+        preparedStatement.setString(6, "user");
     }
 
     @Override
@@ -62,7 +68,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
                 .withName(resultSet.getString("name"))
                 .withSurname(resultSet.getString("surname"))
                 .withUserCredentials(new UserCredentialsEntity(resultSet.getString("email"), resultSet.getString(("password"))))
-                .withDateOfBirth(resultSet.getDate("date_of_birth"))
+                .withRole(resultSet.getString("role").equals("user") ? Role.USER : Role.ADMIN)
                 .build();
     }
 

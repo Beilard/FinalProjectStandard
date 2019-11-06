@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implements AddressDao {
-    private static final String FIND_BY_ID_QUERY = "SELECT * from addresses WHERE id = ?";
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM addresses WHERE id = ?";
     private static final String SAVE_QUERY =
             "INSERT INTO addresses(city, street, building)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM addresses";

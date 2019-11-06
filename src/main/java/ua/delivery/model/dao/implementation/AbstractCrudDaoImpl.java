@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.delivery.model.dao.CrudDao;
 import ua.delivery.model.dao.DBConnector;
-import ua.delivery.model.dao.exception.DataBaseRuntimeException;
+import ua.delivery.model.exception.DataBaseRuntimeException;
 
 import java.sql.*;
 import java.util.*;
@@ -56,7 +56,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Insertion has failed", e);
-            throw new DataBaseRuntimeException("Insertion has failed", e);
+            throw new DataBaseRuntimeException("Insertion has failed, with" + entity.toString(), e);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Update has failed", e);
+            LOGGER.error("Update has failed, while updating " + entity.toString(), e);
             throw new DataBaseRuntimeException(e);
         }
     }
@@ -122,7 +122,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
                 return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
             }
         } catch (SQLException e) {
-            LOGGER.error("An error has occurred while finding by parameter");
+            LOGGER.error("An error has occurred while finding by parameter" + param.toString(), e);
             throw new DataBaseRuntimeException(e);
         }
     }

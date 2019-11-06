@@ -4,6 +4,7 @@ import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.OrderDao;
 import ua.delivery.model.entity.OrderEntity;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,8 +45,8 @@ public class OrderDaoImpl extends AbstractCrudDaoImpl<OrderEntity> implements Or
         preparedStatement.setLong(3, item.getReceiverId());
         preparedStatement.setLong(4, item.getPackageId());
         preparedStatement.setLong(5, item.getPaymentId());
-        preparedStatement.setDate(6, item.getSentDate());
-        preparedStatement.setDate(7, item.getReceiveDate());
+        preparedStatement.setDate(6, Date.valueOf(item.getSentDate()));
+        preparedStatement.setDate(7, Date.valueOf(item.getReceiveDate()));
     }
 
     @Override

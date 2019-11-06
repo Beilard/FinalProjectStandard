@@ -3,12 +3,12 @@ package ua.delivery.model.entity;
 public class RouteEntity {
     private final AddressEntity origin;
     private final AddressEntity destination;
-    private int length;
+    private final int distance;
 
     public RouteEntity(AddressEntity origin, AddressEntity destination) {
         this.origin = origin;
         this.destination = destination;
-        length = 0; //need to implement
+        distance = 0; //need to implement
     }
 
     public AddressEntity getOrigin() {
@@ -19,7 +19,7 @@ public class RouteEntity {
         return destination;
     }
 
-    public int getLength() {
-        return length;
+    public int getDistance() {
+        return distance;
     }
 }

@@ -1,9 +1,7 @@
 package ua.delivery.model.entity;
 
-import ua.delivery.model.domain.UserCredentials;
-import ua.delivery.model.util.Role;
+import ua.delivery.model.domain.Role;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class UserEntity {
@@ -11,15 +9,13 @@ public class UserEntity {
     private final UserCredentialsEntity userCredentials;
     private final String name;
     private final String surname;
-    private final Date dateOfBirth;
     private final Role role;
 
-    public UserEntity(UserEntityBuilder userEntityBuilder) {
+    private UserEntity(UserEntityBuilder userEntityBuilder) {
         this.id = userEntityBuilder.id;
         this.userCredentials = userEntityBuilder.userCredentials;
         this.name = userEntityBuilder.name;
         this.surname = userEntityBuilder.surname;
-        this.dateOfBirth = userEntityBuilder.dateOfBirth;
         this.role = userEntityBuilder.role;
     }
 
@@ -43,10 +39,6 @@ public class UserEntity {
         return surname;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -65,13 +57,12 @@ public class UserEntity {
                 getUserCredentials().equals(that.getUserCredentials()) &&
                 getName().equals(that.getName()) &&
                 getSurname().equals(that.getSurname()) &&
-                getDateOfBirth().equals(that.getDateOfBirth()) &&
                 getRole() == that.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUserCredentials(), getName(), getSurname(), getDateOfBirth(), getRole());
+        return Objects.hash(getId(), getUserCredentials(), getName(), getSurname(), getRole());
     }
 
     public static class UserEntityBuilder {
@@ -79,7 +70,6 @@ public class UserEntity {
         private UserCredentialsEntity userCredentials;
         private String name;
         private String surname;
-        private Date dateOfBirth;
         private Role role;
 
         public UserEntityBuilder() {
@@ -106,11 +96,6 @@ public class UserEntity {
 
         public UserEntityBuilder withSurname(String surname) {
             this.surname = surname;
-            return this;
-        }
-
-        public UserEntityBuilder withDateOfBirth(Date dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
             return this;
         }
 

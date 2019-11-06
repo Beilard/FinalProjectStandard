@@ -6,12 +6,12 @@ import java.util.Objects;
 
 public class PaymentEntity {
     private final Long id;
-    private final Double amount;
-    private final Date date;
+    private final long amount; //decimal or in coins
+    private final LocalDate date;
     private final boolean isComplete;
     private final Long orderId;
 
-    public PaymentEntity(PaymentEntityBuilder paymentEntityBuilder) {
+    private PaymentEntity(PaymentEntityBuilder paymentEntityBuilder) {
         this.id = paymentEntityBuilder.id;
         this.amount = paymentEntityBuilder.amount;
         this.date = paymentEntityBuilder.date;
@@ -27,11 +27,11 @@ public class PaymentEntity {
         return id;
     }
 
-    public Double getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -66,8 +66,8 @@ public class PaymentEntity {
 
     public static class PaymentEntityBuilder {
         private Long id;
-        private Double amount;
-        private Date date;
+        private long amount;
+        private LocalDate date;
         private boolean isComplete;
         private Long orderId;
 
@@ -83,12 +83,12 @@ public class PaymentEntity {
             return this;
         }
 
-        public PaymentEntityBuilder withAmount(Double amount) {
+        public PaymentEntityBuilder withAmount(Long amount) {
             this.amount = amount;
             return this;
         }
 
-        public PaymentEntityBuilder withDate(Date date) {
+        public PaymentEntityBuilder withDate(LocalDate date) {
             this.date = date;
             return this;
         }

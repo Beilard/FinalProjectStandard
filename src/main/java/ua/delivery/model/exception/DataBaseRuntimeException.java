@@ -1,4 +1,4 @@
-package ua.delivery.model.dao.exception;
+package ua.delivery.model.exception;
 
 public class DataBaseRuntimeException extends RuntimeException {
     public DataBaseRuntimeException() {

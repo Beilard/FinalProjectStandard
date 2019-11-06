@@ -1,10 +1,5 @@
 package ua.delivery.model.domain;
 
-import ua.delivery.model.util.Role;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -12,18 +7,14 @@ public class User {
     private final UserCredentials userCredentials;
     private final String name;
     private final String surname;
-    private final Date dateOfBirth;
     private final Role role;
-    private final List<Order> history;
 
-    public User(UserBuilder userBuilder) {
+    private User(UserBuilder userBuilder) {
         this.id = userBuilder.id;
         this.userCredentials = userBuilder.userCredentials;
         this.name = userBuilder.name;
         this.surname = userBuilder.surname;
-        this.dateOfBirth = userBuilder.dateOfBirth;
         this.role = userBuilder.role;
-        this.history = userBuilder.history;
     }
 
     public static UserBuilder builder() {
@@ -46,16 +37,8 @@ public class User {
         return surname;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
     public Role getRole() {
         return role;
-    }
-
-    public List<Order> getHistory() {
-        return history;
     }
 
     @Override
@@ -70,14 +53,12 @@ public class User {
         return getUserCredentials().equals(user.getUserCredentials()) &&
                 getName().equals(user.getName()) &&
                 getSurname().equals(user.getSurname()) &&
-                getDateOfBirth().equals(user.getDateOfBirth()) &&
-                getRole() == user.getRole() &&
-                Objects.equals(getHistory(), user.getHistory());
+                getRole() == user.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserCredentials(), getName(), getSurname(), getDateOfBirth(), getRole(), getHistory());
+        return Objects.hash(getUserCredentials(), getName(), getSurname(), getRole());
     }
 
     public static class UserBuilder {
@@ -85,9 +66,7 @@ public class User {
         private UserCredentials userCredentials;
         private String name;
         private String surname;
-        private Date dateOfBirth;
         private Role role;
-        private List<Order> history;
 
         public UserBuilder() {
         }
@@ -116,18 +95,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder withDateOfBirth(Date dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
-            return this;
-        }
-
         public UserBuilder withRole(Role role) {
             this.role = role;
-            return this;
-        }
-
-        public UserBuilder withHistory(List<Order> history) {
-            this.history = history;
             return this;
         }
     }

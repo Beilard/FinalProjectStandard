@@ -1,6 +1,5 @@
 package ua.delivery.model.entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,13 +9,13 @@ public class OrderEntity {
     private final Long paymentId;
     private final Long senderId;
     private final Long receiverId;
-    private final Date sentDate;
-    private final Date receiveDate;
-    private final RouteEntity route;
+    private final LocalDate sentDate;
+    private final LocalDate receiveDate;
+    private final Long routeId;
 
     public OrderEntity(OrderEntityBuilder orderEntityBuilder) {
         this.id = orderEntityBuilder.id;
-        this.route = orderEntityBuilder.route;
+        this.routeId = orderEntityBuilder.routeId;
         this.packageId = orderEntityBuilder.packageId;
         this.paymentId = orderEntityBuilder.paymentId;
         this.sentDate = orderEntityBuilder.sentDate;
@@ -33,7 +32,6 @@ public class OrderEntity {
         return id;
     }
 
-
     public Long getPackageId() {
         return packageId;
     }
@@ -42,16 +40,16 @@ public class OrderEntity {
         return paymentId;
     }
 
-    public Date getSentDate() {
+    public LocalDate getSentDate() {
         return sentDate;
     }
 
-    public Date getReceiveDate() {
+    public LocalDate getReceiveDate() {
         return receiveDate;
     }
 
-    public RouteEntity getRoute() {
-        return route;
+    public Long getRoute() {
+        return routeId;
     }
 
     public Long getSenderId() {
@@ -89,9 +87,9 @@ public class OrderEntity {
         private Long paymentId;
         private Long senderId;
         private Long receiverId;
-        private Date sentDate;
-        private Date receiveDate;
-        private RouteEntity route;
+        private LocalDate sentDate;
+        private LocalDate receiveDate;
+        private Long routeId;
 
 
         public OrderEntityBuilder() {
@@ -126,18 +124,18 @@ public class OrderEntity {
             return this;
         }
 
-        public OrderEntityBuilder withSentDate(Date sentDate) {
+        public OrderEntityBuilder withSentDate(LocalDate sentDate) {
             this.sentDate = sentDate;
             return this;
         }
 
-        public OrderEntityBuilder withReceiveDate(Date receiveDate) {
+        public OrderEntityBuilder withReceiveDate(LocalDate receiveDate) {
             this.receiveDate = receiveDate;
             return this;
         }
 
-        public OrderEntityBuilder withRoute(RouteEntity route) {
-            this.route = route;
+        public OrderEntityBuilder withRoute(Long routeId) {
+            this.routeId = routeId;
             return this;
         }
     }

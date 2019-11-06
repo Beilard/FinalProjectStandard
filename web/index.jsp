@@ -1,34 +1,34 @@
-<%@ page import="ua.delivery.model.dao.implementation.UserDaoImpl" %>
-<%@ page import="ua.delivery.model.dao.DBConnector" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  <%=new UserDaoImpl(new DBConnector("database")).findAll()%>
 
-  <table>
+<html>
+<head>
+    <title>$Title$</title>
+</head>
+<body>
+
+<table border="1">
     <thread>
-      <tr>
-        <th>id</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Birth Date</th>
-        <th>Role</th>
-      </tr>
+        <tr>
+            <th>id</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Birth Date</th>
+            <th>Role</th>
+        </tr>
     </thread>
     <tbody>
-    <c:forEach items="${list}" var = "list">
-      <li>${ListItem.name}</li>
+    <c:forEach items="${requestScope.list}" var="list">
+        <td>${list.name}</td>
+        <td>${list.surname}</td>
+        <td>${list.name}</td>
+
     </c:forEach>
     </tbody>
 
-  </table>
+</table>
 
 
-  </body>
+</body>
 </html>

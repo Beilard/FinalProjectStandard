@@ -1,6 +1,5 @@
 package ua.delivery.model.domain;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,11 +12,11 @@ public class Order {
     private final Long receiverId;
     private final LocalDate sentDate;
     private final LocalDate receiveDate;
-    private final Route route;
+    private final Long routeId;
 
-    public Order(OrderBuilder orderBuilder) {
+    private Order(OrderBuilder orderBuilder) {
         this.id = orderBuilder.id;
-        this.route = orderBuilder.route;
+        this.routeId = orderBuilder.routeId;
         this.packageId = orderBuilder.packageId;
         this.paymentId = orderBuilder.paymentId;
         this.sentDate = orderBuilder.sentDate;
@@ -51,8 +50,16 @@ public class Order {
         return receiveDate;
     }
 
-    public Route getRoute() {
-        return route;
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public Long getReceiverId() {
+        return receiverId;
     }
 
     @Override
@@ -68,12 +75,12 @@ public class Order {
                 Objects.equals(getPaymentId(), order.getPaymentId()) &&
                 Objects.equals(getSentDate(), order.getSentDate()) &&
                 Objects.equals(getReceiveDate(), order.getReceiveDate()) &&
-                Objects.equals(getRoute(), order.getRoute());
+                Objects.equals(getRouteId(), order.getRouteId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPackageId(), getPaymentId(), getSentDate(), getReceiveDate(), getRoute());
+        return Objects.hash(getPackageId(), getPaymentId(), getSentDate(), getReceiveDate(), getRouteId());
     }
 
     public static class OrderBuilder {
@@ -84,7 +91,7 @@ public class Order {
         private Long receiverId;
         private LocalDate sentDate;
         private LocalDate receiveDate;
-        private Route route;
+        private Long routeId;
 
 
         public OrderBuilder() {
@@ -129,8 +136,8 @@ public class Order {
             return this;
         }
 
-        public OrderBuilder withRoute(Route route) {
-            this.route = route;
+        public OrderBuilder withRoute(Long routeId) {
+            this.routeId = routeId;
             return this;
         }
     }

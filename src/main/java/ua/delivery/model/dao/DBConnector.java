@@ -1,9 +1,8 @@
 package ua.delivery.model.dao;
 
-import org.apache.logging.log4j.spi.LoggerContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.delivery.model.dao.exception.DataBaseRuntimeException;
+import ua.delivery.model.exception.DataBaseRuntimeException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +14,8 @@ public class DBConnector {
     private final String url;
     private final String user;
     private final String password;
+
+    //pool of connections
 
     public DBConnector(String fileConfigName) {
         ResourceBundle resource = ResourceBundle.getBundle(fileConfigName);

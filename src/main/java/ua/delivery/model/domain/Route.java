@@ -7,7 +7,7 @@ public class Route {
     private final Address destination;
     private int length;
 
-    public Route(Address origin, Address destination) {
+    private Route(Address origin, Address destination) {
         this.origin = origin;
         this.destination = destination;
         length = 0; //need to implement

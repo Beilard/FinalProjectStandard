@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginValidator<E> implements Validator<UserCredentials> {
+public class LoginValidator implements Validator<UserCredentials> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
@@ -31,25 +31,25 @@ public class LoginValidator<E> implements Validator<UserCredentials> {
     }
 
     @Override
-    public void validate(UserCredentials userCredential) {
+    public void validate(UserCredentials userCredentials) {
 
-        if (Objects.isNull(userCredential)) {
+        if (Objects.isNull(userCredentials)) {
             throw new EntityNotFoundException("Provided object is null!");
         }
 
-        if (!userCredential.getEmail().matches(EMAIL_REGEX)) {
-            logger.error("Email format not supported " + userCredential.getEmail());
+        if (!userCredentials.getEmail().matches(EMAIL_REGEX)) {
+            logger.error("Email format not supported " + userCredentials.getEmail());
             throw new InvalidEmailFormatException("Email format not supported");
         }
 
-        Optional<UserEntity> client = userDao.findByEmail(userCredential.getEmail());
+        Optional<UserEntity> client = userDao.findByEmail(userCredentials.getEmail());
 
         if (!(client.isPresent())) {
             logger.error("Client not found!");
             throw new EntityNotFoundException("Client not found!");
         }
 
-        Matcher matcher = Pattern.compile(PASSWORD_PATTERN).matcher(userCredential.getPassword());
+        Matcher matcher = Pattern.compile(PASSWORD_PATTERN).matcher(userCredentials.getPassword());
         if (!(matcher.matches())) {
             logger.error("Invalid password format!");
             throw new InvalidPasswordFormatException("Invalid password format!");
@@ -57,7 +57,7 @@ public class LoginValidator<E> implements Validator<UserCredentials> {
 
 
         String password = PasswordEncoder.decrypt(client.get().getUserCredentials().getPassword());
-        if (!(password.equals(userCredential.getPassword()))) {
+        if (!(password.equals(userCredentials.getPassword()))) {
             logger.error("Incorrect email or password!");
             throw new IncorrectEmailOrPasswordException("Incorrect email or password!");
         }

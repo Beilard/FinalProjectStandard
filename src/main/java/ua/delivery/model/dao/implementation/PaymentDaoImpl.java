@@ -4,21 +4,31 @@ import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.PaymentDao;
 import ua.delivery.model.entity.PaymentEntity;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Optional;
 
 public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implements PaymentDao {
-    private static final String FIND_BY_ID_QUERY = "SELECT * from payment WHERE id = ?";
+    private static final String FIND_BY_ID_QUERY = "SELECT * from payments WHERE id = ?";
     private static final String SAVE_QUERY =
             "INSERT INTO payments(order_id, amount, date, is_complete)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM payments";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM payments Where id = ?";
     private static final String UPDATE_QUERY =
             "UPDATE payments SET order_id = ?, amount = ?, date = ?, is_complete =? WHERE id= ?";
+    private static final String FIND_BY_ORDER_ID =
+            "SELECT * FROM payments WHERE order_id= ?";
 
     public PaymentDaoImpl(DBConnector connector) {
         super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    }
+
+    @Override
+    public Optional<PaymentEntity> findByOrderId(Long id) {
+        return findByLongParam(id, FIND_BY_ORDER_ID);
     }
 
     @Override
@@ -26,8 +36,8 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
         return PaymentEntity.builder()
                 .withId(resultSet.getLong("id"))
                 .withOrderId(resultSet.getLong("order_id"))
-                .withAmount(resultSet.getDouble("amount"))
-                .withDate(resultSet.getDate("date"))
+                .withAmount(resultSet.getLong("amount"))
+                .withDate(resultSet.getDate("date").toLocalDate())
                 .withComplete(resultSet.getBoolean("is_complete"))
                 .build();
     }
@@ -36,7 +46,7 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
     protected void insert(PreparedStatement preparedStatement, PaymentEntity item) throws SQLException {
         preparedStatement.setLong(2, item.getOrderId());
         preparedStatement.setDouble(3, item.getAmount());
-        preparedStatement.setDate(4, item.getDate());
+        preparedStatement.setDate(4, Date.valueOf(item.getDate()));
         preparedStatement.setBoolean(5, item.isComplete());
     }
 
@@ -45,4 +55,6 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
         insert(preparedStatement, entity);
         preparedStatement.setLong(1, entity.getId());
     }
+
+
 }
