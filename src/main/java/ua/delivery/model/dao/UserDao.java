@@ -1,6 +1,5 @@
 package ua.delivery.model.dao;
 
-import ua.delivery.model.domain.User;
 import ua.delivery.model.entity.UserEntity;
 
 import java.util.Optional;

@@ -2,14 +2,12 @@ package ua.delivery.model.service.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.delivery.model.dao.implementation.UserDaoImpl;
-import ua.delivery.model.domain.User;
+import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.entity.UserEntity;
 import ua.delivery.model.exception.EntityNotFoundException;
 import ua.delivery.model.exception.IncorrectEmailOrPasswordException;
-import ua.delivery.model.exception.InvalidEmailFormatException;
-import ua.delivery.model.exception.InvalidPasswordFormatException;
+import ua.delivery.model.exception.InvalidCredentialsException;
 import ua.delivery.model.service.encoder.PasswordEncoder;
 
 import java.util.Objects;
@@ -21,13 +19,12 @@ public class LoginValidator implements Validator<UserCredentials> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
-    private Logger logger = LoggerFactory.getLogger("LoginValidator.class");
+    private final static Logger LOGGER = LoggerFactory.getLogger("LoginValidator.class");
 
-    private final UserDaoImpl userDao;
+    private final UserDao userDao;
 
-    public LoginValidator(UserDaoImpl userDao) {
+    public LoginValidator(UserDao userDao) {
         this.userDao = userDao;
-
     }
 
     @Override
@@ -38,28 +35,17 @@ public class LoginValidator implements Validator<UserCredentials> {
         }
 
         if (!userCredentials.getEmail().matches(EMAIL_REGEX)) {
-            logger.error("Email format not supported " + userCredentials.getEmail());
-            throw new InvalidEmailFormatException("Email format not supported");
-        }
-
-        Optional<UserEntity> client = userDao.findByEmail(userCredentials.getEmail());
-
-        if (!(client.isPresent())) {
-            logger.error("Client not found!");
-            throw new EntityNotFoundException("Client not found!");
+            LOGGER.error("Email format not supported " + userCredentials.getEmail());
+            throw new InvalidCredentialsException("Email format not supported");
         }
 
         Matcher matcher = Pattern.compile(PASSWORD_PATTERN).matcher(userCredentials.getPassword());
         if (!(matcher.matches())) {
-            logger.error("Invalid password format!");
-            throw new InvalidPasswordFormatException("Invalid password format!");
+            LOGGER.error("Invalid password format!");
+            throw new InvalidCredentialsException("Invalid password format!");
         }
 
 
-        String password = PasswordEncoder.decrypt(client.get().getUserCredentials().getPassword());
-        if (!(password.equals(userCredentials.getPassword()))) {
-            logger.error("Incorrect email or password!");
-            throw new IncorrectEmailOrPasswordException("Incorrect email or password!");
-        }
+
     }
 }

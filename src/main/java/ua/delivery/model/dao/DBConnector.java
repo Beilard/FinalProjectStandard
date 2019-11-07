@@ -1,34 +1,36 @@
 package ua.delivery.model.dao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.delivery.model.exception.DataBaseRuntimeException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+
 
 public class DBConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnector.class);
-    private final String url;
-    private final String user;
-    private final String password;
+    private static BasicDataSource dataSource = new BasicDataSource();
 
-    //pool of connections
 
-    public DBConnector(String fileConfigName) {
-        ResourceBundle resource = ResourceBundle.getBundle(fileConfigName);
-        this.url = resource.getString("db.url");
-        this.user = resource.getString("db.user");
-        this.password = resource.getString("db.password");
+    static {
+        dataSource.setUrl("db.url");
+        dataSource.setUsername("root");
+        dataSource.setPassword("admin");
+        dataSource.setMinIdle(10);
+        dataSource.setMaxIdle(15);
+        dataSource.setMaxOpenPreparedStatements(100);
     }
 
-    public Connection getConnection() {
+    public DBConnector() {
+    }
+
+    public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(url, user, password);
+            return dataSource.getConnection();
         } catch (SQLException e) {
-            LOGGER.error("There is a connection error to the DB");
+            LOGGER.error("There is a connection error to the DB", e);
             throw new DataBaseRuntimeException(e);
         }
     }

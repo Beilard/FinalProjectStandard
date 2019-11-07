@@ -30,16 +30,14 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
         }
     };
 
-    private final DBConnector connector;
     private final String saveQuery;
     private final String findByIdQuery;
     private final String findAllQuery;
     private final String updateQuery;
     private final String deleteByIdQuery;
 
-    public AbstractCrudDaoImpl(DBConnector connector, String saveQuery, String findByIdQuery,
+    public AbstractCrudDaoImpl(String saveQuery, String findByIdQuery,
                                String findAllQuery, String updateQuery, String deleteByIdQuery) {
-        this.connector = connector;
         this.saveQuery = saveQuery;
         this.findByIdQuery = findByIdQuery;
         this.findAllQuery = findAllQuery;
@@ -49,7 +47,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
 
     @Override
     public void save(E entity) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
 
             insert(preparedStatement, entity);
@@ -67,7 +65,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
 
     @Override
     public List<E> findAll() {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery)) {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<E> entities = new ArrayList<>();
@@ -84,7 +82,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
 
     @Override
     public void update(E entity) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             updateValues(preparedStatement, entity);
@@ -115,7 +113,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
     }
 
     private <P> Optional<E> findByParam(P param, String query, BiConsumer<PreparedStatement, P> consumer) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             consumer.accept(preparedStatement, param);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {

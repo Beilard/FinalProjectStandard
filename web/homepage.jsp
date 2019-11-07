@@ -19,7 +19,8 @@
 
 <fmt:message key="label.header"/>
 
-
+<br/>
+<br/>
 
 <fmt:message key="label.footer"/>
 </body>

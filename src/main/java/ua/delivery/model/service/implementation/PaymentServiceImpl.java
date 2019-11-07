@@ -1,4 +1,4 @@
-package ua.delivery.model.dao.implementation;
+package ua.delivery.model.service.implementation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,31 +21,29 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Optional<Payment> createPayment(Long orderId, long amount) {
-        if (orderId == 0 && amount == 0) {
+        if (orderId < 0 && amount <= 0) {
             throw new IllegalArgumentException();
         }
         final Payment payment = Payment.builder()
                 .withAmount(amount)
                 .withComplete(false)
-                .withDate(LocalDate.now())
+                .withDate(LocalDate.now()) //wrap for tests
                 .withOrderId(orderId)
                 .build();
         paymentDao.save(PaymentMapper.mapPaymentToEntity(payment));
         return Optional.of(payment);
     }
 
+
     @Override
     public Optional<Payment> completePayment(Payment payment) {
         if (Objects.isNull(payment)) {
             throw new IllegalArgumentException();
         }
-        final Payment newPayment = Payment.builder()
-                .withId(payment.getId())
-                .withAmount(payment.getAmount())
+        final Payment newPayment = Payment.builder(payment)
                 .withComplete(true)
-                .withDate(payment.getDate())
-                .withOrderId(payment.getOrderId())
                 .build();
+
         return Optional.ofNullable(newPayment);
     }
 }

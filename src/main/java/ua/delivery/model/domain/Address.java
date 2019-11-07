@@ -1,6 +1,5 @@
 package ua.delivery.model.domain;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 

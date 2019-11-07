@@ -22,7 +22,7 @@ public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implement
             "UPDATE addresses SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
 
     public AddressDaoImpl(DBConnector connector) {
-        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+        super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override

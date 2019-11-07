@@ -1,8 +1,6 @@
 package ua.delivery.model.dao.implementation;
 
-import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.PackageDao;
-
 import ua.delivery.model.entity.PackageEntity;
 
 import java.sql.PreparedStatement;
@@ -18,8 +16,8 @@ public class PackageDaoImpl extends AbstractCrudDaoImpl<PackageEntity> implement
     private static final String UPDATE_QUERY =
             "UPDATE packages SET type = ?, weight = ? WHERE id = ?";
 
-    public PackageDaoImpl(DBConnector connector) {
-        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public PackageDaoImpl() {
+        super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override

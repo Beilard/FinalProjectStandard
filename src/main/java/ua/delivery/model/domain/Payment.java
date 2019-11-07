@@ -23,6 +23,10 @@ public class Payment {
         return new PaymentBuilder();
     }
 
+    public static PaymentBuilder builder(Payment payment) {
+        return new PaymentBuilder(payment);
+    }
+
     public Long getId() {
         return id;
     }
@@ -70,7 +74,15 @@ public class Payment {
         private boolean isComplete;
         private Long orderId;
 
-        public PaymentBuilder() {
+        private PaymentBuilder() {
+        }
+
+        private PaymentBuilder(Payment payment) {
+            this.id =payment. id;
+            this.amount =payment. amount;
+            this.date =payment. date;
+            this.isComplete =payment. isComplete;
+            this.orderId =payment. orderId;
         }
 
         public Payment build() {

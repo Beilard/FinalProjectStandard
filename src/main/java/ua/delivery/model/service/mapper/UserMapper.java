@@ -16,7 +16,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserEntity mapEntityToUser (User user) {
+    public static UserEntity mapUserToEntity (User user) {
         return UserEntity.builder()
                 .withId(user.getId())
                 .withName(user.getName())

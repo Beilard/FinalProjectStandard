@@ -2,13 +2,14 @@ package ua.delivery.model.dao.implementation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.UserDao;
+import ua.delivery.model.domain.Role;
 import ua.delivery.model.entity.UserCredentialsEntity;
 import ua.delivery.model.entity.UserEntity;
-import ua.delivery.model.domain.Role;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,8 +26,8 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements User
     private static final String FIND_BY_SURNAME = "SELECT * FROM users WHERE surname = ?";
 
 
-    public UserDaoImpl(DBConnector connector) {
-        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public UserDaoImpl() {
+        super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override

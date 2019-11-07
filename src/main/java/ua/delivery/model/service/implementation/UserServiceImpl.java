@@ -6,17 +6,25 @@ import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.domain.Order;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
+import ua.delivery.model.entity.UserEntity;
+import ua.delivery.model.exception.DataBaseRuntimeException;
+import ua.delivery.model.exception.EmailAlreadyTakenException;
+import ua.delivery.model.exception.EntityNotFoundException;
+import ua.delivery.model.exception.IncorrectEmailOrPasswordException;
 import ua.delivery.model.service.UserService;
+import ua.delivery.model.service.encoder.PasswordEncoder;
 import ua.delivery.model.service.mapper.UserMapper;
 import ua.delivery.model.service.validator.RegistrationValidator;
 import ua.delivery.model.service.validator.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
-    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final Validator loginValidator;
     private final Validator registrationValidator;
     private final UserDao userDao;
@@ -30,12 +38,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         registrationValidator.validate(user);
+        if (userDao.findByEmail(user.getUserCredentials().getEmail()).isPresent()) {
+            LOGGER.warn("Provided email " + user.getUserCredentials().getEmail() + " is already taken");
+            throw new EmailAlreadyTakenException("Email already taken!");
+        }
+        userDao.save(UserMapper.mapUserToEntity(user));
     }
 
     @Override
     public User login(String email, String password) {
         loginValidator.validate(new UserCredentials(email, password));
-        return UserMapper.mapEntityToUser(userDao.findByEmail(email).get());  }
+
+        Optional<UserEntity> user = userDao.findByEmail(email);
+
+        if (!(user.isPresent())) {
+            LOGGER.error("User account not found!");
+            throw new EntityNotFoundException("Client not found!");
+        }
+        String dbPassword = null;
+        try {
+            dbPassword = PasswordEncoder.decrypt(user.get().getUserCredentials().getPassword());
+        } catch (RuntimeException e) {
+            LOGGER.error("User has no password: " + user);
+            throw new DataBaseRuntimeException(e);
+        }
+        if (!(Objects.equals(dbPassword, password))) {
+            LOGGER.error("Incorrect email or password!");
+            throw new IncorrectEmailOrPasswordException("Incorrect email or password!");
+        }
+        return UserMapper.mapEntityToUser(userDao.findByEmail(email).get());
+    }
 
     @Override
     public List<User> findAll() {

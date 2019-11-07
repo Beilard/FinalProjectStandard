@@ -51,7 +51,7 @@ public class RoleFilter implements Filter {
         final Role sessionRole = ((User) request.getSession().getAttribute("userSession")).getRole();
 
         if (!rights.get(sessionRole).contains(requestURI)) {
-            request.getRequestDispatcher(request.getContextPath() + "/WEB-INF/errors/not_found.jsp")
+            request.getRequestDispatcher(request.getContextPath() + "view/not_found.jsp")
                     .forward(request, response);
         }
 

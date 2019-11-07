@@ -1,6 +1,5 @@
 package ua.delivery.model.dao.implementation;
 
-import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.PaymentDao;
 import ua.delivery.model.entity.PaymentEntity;
 
@@ -8,7 +7,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Optional;
 
 public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implements PaymentDao {
@@ -22,8 +20,8 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
     private static final String FIND_BY_ORDER_ID =
             "SELECT * FROM payments WHERE order_id= ?";
 
-    public PaymentDaoImpl(DBConnector connector) {
-        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public PaymentDaoImpl() {
+        super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ua.delivery.model.dao.implementation;
 
-import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.OrderDao;
 import ua.delivery.model.entity.OrderEntity;
 
@@ -20,8 +19,8 @@ public class OrderDaoImpl extends AbstractCrudDaoImpl<OrderEntity> implements Or
             "UPDATE orders SET sender_id=?, receiver_id=?, package_id=?, payment_id=?, route_id=?, sent_date=?, receive_date=? WHERE id = ?";
     private static final String FIND_BY_ROUTE = "SELECT * FROM orders WHERE id = ?";
 
-    public OrderDaoImpl(DBConnector connector) {
-        super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public OrderDaoImpl() {
+        super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
 

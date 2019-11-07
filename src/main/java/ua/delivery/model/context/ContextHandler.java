@@ -9,6 +9,7 @@ import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.dao.implementation.UserDaoImpl;
 import ua.delivery.model.service.UserService;
 import ua.delivery.model.service.implementation.UserServiceImpl;
+import ua.delivery.model.service.validator.LoginValidator;
 import ua.delivery.model.service.validator.RegistrationValidator;
 import ua.delivery.model.service.validator.Validator;
 
@@ -17,10 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContextHandler {
-    private static final DBConnector DB_CONNECTOR = new DBConnector("database");
+    private static final DBConnector DB_CONNECTOR = new DBConnector();
     private static final UserDao USER_DAO = new UserDaoImpl(DB_CONNECTOR);
-    private static final Validator VALIDATOR = new RegistrationValidator(USER_DAO);
-    private static final UserService USER_SERVICE = new UserServiceImpl(VALIDATOR, USER_DAO);
+    private static final Validator REGISTRATION_VALIDATOR = new RegistrationValidator(USER_DAO);
+    private static final Validator LOGIN_VALIDATOR = new LoginValidator(USER_DAO);
+    private static final UserService USER_SERVICE =
+            new UserServiceImpl(REGISTRATION_VALIDATOR, LOGIN_VALIDATOR, USER_DAO);
     private static final Command LOGIN_COMMAND = new LoginCommand(USER_SERVICE);
     private static final Command LOGOUT_COMMAND = new LogoutCommand();
     private static final Command REGISTER_COMMAND = new RegisterCommand(USER_SERVICE);
@@ -58,13 +61,6 @@ public class ContextHandler {
         return DB_CONNECTOR;
     }
 
-    public UserDao getUserDao() {
-        return USER_DAO;
-    }
-
-    public Validator getVALIDATOR() {
-        return VALIDATOR;
-    }
 
     public UserService getUserService() {
         return USER_SERVICE;
