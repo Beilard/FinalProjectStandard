@@ -7,6 +7,7 @@ import ua.delivery.model.service.UserService;
 import ua.delivery.model.domain.Role;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 public class RegisterCommand implements Command {
@@ -17,14 +18,12 @@ public class RegisterCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         final String name = request.getParameter("name");
         final String surname = request.getParameter("surname");
         final String email = request.getParameter("email");
         final String password = request.getParameter("password");
         final String confirmPassword = request.getParameter("confirmPassword");
-
-        //date to implement;
 
         if (!(Objects.equals(password, confirmPassword))) {
             return "view/register.jsp";
@@ -37,6 +36,9 @@ public class RegisterCommand implements Command {
                 .withRole(Role.USER)
                 .build();
 
-        return "view/login.jsp";
+        userService.register(user);
+        request.getSession().setAttribute("sessionUser", user);
+
+        return "forward:/WEB-INF/user/index.jsp";
     }
 }

@@ -28,9 +28,9 @@ public class UserController extends HttpServlet {
 
         //filter
 
-        final List<User> users = userService.findAll();
-        req.setAttribute("users", users);
-
-        req.getRequestDispatcher("view/table.jsp").forward(req, resp);
+//        final List<User> users = userService.findAll();
+//        req.setAttribute("users", users);
+//
+//        req.getRequestDispatcher("view/table.jsp").forward(req, resp);
     }
 }

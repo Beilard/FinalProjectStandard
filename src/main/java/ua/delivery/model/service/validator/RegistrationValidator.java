@@ -2,7 +2,6 @@ package ua.delivery.model.service.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.exception.EntityNotFoundException;
@@ -16,10 +15,8 @@ public class RegistrationValidator implements Validator<User> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
-    private final UserDao userDao;
 
-    public RegistrationValidator(UserDao userDao) {
-        this.userDao = userDao;
+    public RegistrationValidator() {
     }
 
     @Override

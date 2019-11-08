@@ -3,4 +3,38 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <servlet>
+        <servlet-name>TableController</servlet-name>
+        <servlet-class>ua.delivery.controller.TableController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TableController</servlet-name>
+        <url-pattern>view/table</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MainServlet</servlet-name>
+        <servlet-class>ua.delivery.controller.MainServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MainServlet</servlet-name>
+        <url-pattern>/page/*</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>ua.delivery.controller.filter.RoleFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/page/*</url-pattern>
+    </filter-mapping>
+
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/view/error-page.jsp</location>
+    </error-page>
+
 </web-app>

@@ -61,6 +61,17 @@ public class User {
         return Objects.hash(getUserCredentials(), getName(), getSurname(), getRole());
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userCredentials=" + userCredentials +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
     public static class UserBuilder {
         private Long id;
         private UserCredentials userCredentials;

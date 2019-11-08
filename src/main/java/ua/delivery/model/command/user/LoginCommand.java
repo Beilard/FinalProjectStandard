@@ -5,6 +5,7 @@ import ua.delivery.model.domain.User;
 import ua.delivery.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
@@ -15,12 +16,12 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
-        final String email = (String) request.getAttribute("email");
-        final String password = (String) request.getAttribute("password");
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        final String email = request.getParameter("email");
+        final String password = request.getParameter("password");
         final User user = userService.login(email, password);
         final HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-        return "view/profile.jsp";
+        session.setAttribute("sessionUser", user);
+        return "forward:/WEB-INF/user/index.jsp";
     }
 }

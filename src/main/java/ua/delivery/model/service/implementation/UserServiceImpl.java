@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userDao.findAll().stream()
+    public List<User> findAll(int start, int total) {
+        return userDao.findAll(start, total).stream()
                 .map(UserMapper::mapEntityToUser)
                 .collect(Collectors.toList());
     }

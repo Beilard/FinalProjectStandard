@@ -4,7 +4,6 @@ import ua.delivery.model.command.Command;
 import ua.delivery.model.command.user.LoginCommand;
 import ua.delivery.model.command.user.LogoutCommand;
 import ua.delivery.model.command.user.RegisterCommand;
-import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.dao.implementation.UserDaoImpl;
 import ua.delivery.model.service.UserService;
@@ -18,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContextHandler {
-    private static final DBConnector DB_CONNECTOR = new DBConnector();
-    private static final UserDao USER_DAO = new UserDaoImpl(DB_CONNECTOR);
-    private static final Validator REGISTRATION_VALIDATOR = new RegistrationValidator(USER_DAO);
-    private static final Validator LOGIN_VALIDATOR = new LoginValidator(USER_DAO);
+
+    private static final UserDao USER_DAO = new UserDaoImpl();
+    private static final Validator REGISTRATION_VALIDATOR = new RegistrationValidator();
+    private static final Validator LOGIN_VALIDATOR = new LoginValidator();
     private static final UserService USER_SERVICE =
             new UserServiceImpl(REGISTRATION_VALIDATOR, LOGIN_VALIDATOR, USER_DAO);
     private static final Command LOGIN_COMMAND = new LoginCommand(USER_SERVICE);
@@ -49,18 +48,13 @@ public class ContextHandler {
 
     private static Map<String, Command> initUserCommand() {
         Map<String, Command> commandNameToCommand = new HashMap<>();
-        commandNameToCommand.put("login", LOGIN_COMMAND);
-        commandNameToCommand.put("logout", LOGOUT_COMMAND);
-        commandNameToCommand.put("register", REGISTER_COMMAND);
+        commandNameToCommand.put("/login", LOGIN_COMMAND);
+        commandNameToCommand.put("/logout", LOGOUT_COMMAND);
+        commandNameToCommand.put("/register", REGISTER_COMMAND);
 
         return Collections.unmodifiableMap(commandNameToCommand);
 
     }
-
-    public DBConnector getDbConnector() {
-        return DB_CONNECTOR;
-    }
-
 
     public UserService getUserService() {
         return USER_SERVICE;

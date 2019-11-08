@@ -23,7 +23,20 @@ public class RoleFilter implements Filter {
         Set<String> userLinks = new HashSet<>();
         Set<String> guestLinks = new HashSet<>();
 
-        //jsp links
+        adminLinks.add("/");
+        adminLinks.add("/logout");
+
+        userLinks.add("/");
+        userLinks.add("/reg_fwd");
+        userLinks.add("/register");
+        userLinks.add("/logout");
+
+
+        guestLinks.add("/");
+        guestLinks.add("/login");
+        guestLinks.add("/register");
+        guestLinks.add("/reg_fwd");
+
 
         rights.put(Role.ADMIN, adminLinks);
         rights.put(Role.USER, userLinks);
@@ -41,11 +54,8 @@ public class RoleFilter implements Filter {
 
         if (request.getSession().getAttribute("sessionUser") == null) {
             request.getSession().setAttribute("sessionUser", User.builder()
-            .withName("")
-            .withSurname("")
-            .withUserCredentials(new UserCredentials("", ""))
-            .withId(0L)
-            .withRole(Role.GUEST));
+            .withRole(Role.GUEST)
+            .build());
         }
 
         final Role sessionRole = ((User) request.getSession().getAttribute("userSession")).getRole();

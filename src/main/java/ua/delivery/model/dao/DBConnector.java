@@ -13,9 +13,8 @@ public class DBConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnector.class);
     private static BasicDataSource dataSource = new BasicDataSource();
 
-
     static {
-        dataSource.setUrl("db.url");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/main_schema");
         dataSource.setUsername("root");
         dataSource.setPassword("admin");
         dataSource.setMinIdle(10);
