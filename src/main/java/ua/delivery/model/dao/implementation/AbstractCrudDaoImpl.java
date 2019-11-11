@@ -1,0 +1,134 @@
+package ua.delivery.model.dao.implementation;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ua.delivery.model.dao.CrudDao;
+import ua.delivery.model.dao.DBConnector;
+import ua.delivery.model.exception.DataBaseRuntimeException;
+
+import java.sql.*;
+import java.util.*;
+import java.util.function.BiConsumer;
+
+public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDaoImpl.class);
+    private static final BiConsumer<PreparedStatement, String> STRING_CONSUMER
+            = (PreparedStatement pr, String param) -> {
+        try {
+            pr.setString(1, param);
+        } catch (SQLException e) {
+            throw new DataBaseRuntimeException(e);
+        }
+    };
+
+    private static final BiConsumer<PreparedStatement, Long> LONG_CONSUMER
+            = (PreparedStatement pr, Long param) -> {
+        try {
+            pr.setLong(1, param);
+        } catch (SQLException e) {
+            throw new DataBaseRuntimeException(e);
+        }
+    };
+
+    private final String saveQuery;
+    private final String findByIdQuery;
+    private final String findAllQuery;
+    private final String updateQuery;
+    private final String deleteByIdQuery;
+
+    public AbstractCrudDaoImpl(String saveQuery, String findByIdQuery,
+                               String findAllQuery, String updateQuery, String deleteByIdQuery) {
+        this.saveQuery = saveQuery;
+        this.findByIdQuery = findByIdQuery;
+        this.findAllQuery = findAllQuery;
+        this.updateQuery = updateQuery;
+        this.deleteByIdQuery = deleteByIdQuery;
+    }
+
+    @Override
+    public void save(E entity) {
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
+
+            insert(preparedStatement, entity);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Insertion has failed", e);
+            throw new DataBaseRuntimeException("Insertion has failed, with" + entity.toString(), e);
+        }
+    }
+
+    @Override
+    public Optional<E> findById(Long id) {
+        return findByLongParam(id, findByIdQuery);
+    }
+
+    @Override
+    public List<E> findAll(int start, int total) {
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery +
+                     " LIMIT " + (start - 1) + "," + total)) {
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<E> entities = new ArrayList<>();
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+                return entities;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("There has been an error while trying to find all entities");
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+
+    @Override
+    public void update(E entity) {
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            updateValues(preparedStatement, entity);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Update has failed, while updating " + entity.toString(), e);
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAllById(Set<Long> longs) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected Optional<E> findByLongParam(Long id, String query) {
+        return findByParam(id, query, LONG_CONSUMER);
+    }
+
+    protected Optional<E> findByStringParam(String param, String query) {
+        return findByParam(param, query, STRING_CONSUMER);
+    }
+
+    private <P> Optional<E> findByParam(P param, String query, BiConsumer<PreparedStatement, P> consumer) {
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            consumer.accept(preparedStatement, param);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("An error has occurred while finding by parameter" + param.toString(), e);
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+
+    protected abstract E mapResultSetToEntity(ResultSet resultSet) throws SQLException;
+
+    protected abstract void insert(PreparedStatement preparedStatement, E entity) throws SQLException;
+
+    protected abstract void updateValues(PreparedStatement preparedStatement, E entity) throws SQLException;
+}

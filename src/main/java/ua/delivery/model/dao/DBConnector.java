@@ -1,0 +1,39 @@
+package ua.delivery.model.dao;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ua.delivery.model.exception.DataBaseRuntimeException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+
+public class DBConnector {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBConnector.class);
+    private static BasicDataSource dataSource = new BasicDataSource();
+
+    static {
+        final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
+        dataSource.setDriverClassName(resourceBundle.getString("db.driver"));
+        dataSource.setUrl(resourceBundle.getString("db.url"));
+        dataSource.setUsername(resourceBundle.getString("db.user"));
+        dataSource.setPassword(resourceBundle.getString("db.password"));
+        dataSource.setMinIdle(Integer.parseInt(resourceBundle.getString("db.minIdle")));
+        dataSource.setMaxIdle(Integer.parseInt(resourceBundle.getString("db.maxIdle")));
+        dataSource.setMaxOpenPreparedStatements(Integer.parseInt(resourceBundle.getString("db.maxPreparedStatements")));
+    }
+
+    public DBConnector() {
+    }
+
+    public static Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("There is a connection error to the DB", e);
+            throw new DataBaseRuntimeException(e);
+        }
+    }
+}
