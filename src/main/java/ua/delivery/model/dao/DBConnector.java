@@ -1,8 +1,7 @@
 package ua.delivery.model.dao;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.exception.DataBaseRuntimeException;
 
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.util.ResourceBundle;
 
 
 public class DBConnector {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DBConnector.class);
+    private static final Logger LOGGER = Logger.getLogger(DBConnector.class);
     private static BasicDataSource dataSource = new BasicDataSource();
 
     static {

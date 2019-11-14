@@ -1,6 +1,5 @@
 package ua.delivery.model.service;
 
-
 import ua.delivery.model.domain.User;
 
 import java.util.List;
@@ -10,5 +9,5 @@ public interface UserService {
 
     User login(String email, String password);
 
-    List<User> findAll(int start, int total);
+    List<User> findAll();
 }

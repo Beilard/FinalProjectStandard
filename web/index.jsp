@@ -19,7 +19,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -51,7 +50,7 @@
                 </button>
                 <a class="nav-link" href="index.jsp">Flash Delivery</a>
                 <a class="nav-link" href="#"><label><fmt:message key="nav.bar.feature"/></label></a>
-                <a class="nav-link" href="#"><label><fmt:message key="nav.bar.contact"/></label></a>
+                <a class="nav-link" href="pagination.jsp"><label><fmt:message key="nav.bar.contact"/></label></a>
                 <a class="nav-link" href="login.jsp"><label><fmt:message key="nav.bar.login"/></label></a>
                 <a class="nav-link" href="register.jsp"><label><fmt:message key="nav.bar.register"/></label></a>
                 <form style="position:absolute; right:73px;">

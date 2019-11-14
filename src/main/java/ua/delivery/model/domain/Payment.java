@@ -1,6 +1,5 @@
 package ua.delivery.model.domain;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,14 +8,12 @@ public class Payment {
     private final long amount;
     private final LocalDate date;
     private final boolean isComplete;
-    private final Long orderId;
 
     private Payment(PaymentBuilder paymentBuilder) {
         this.id = paymentBuilder.id;
         this.amount = paymentBuilder.amount;
         this.date = paymentBuilder.date;
         this.isComplete = paymentBuilder.isComplete;
-        this.orderId = paymentBuilder.orderId;
     }
 
     public static PaymentBuilder builder() {
@@ -43,10 +40,6 @@ public class Payment {
         return isComplete;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -58,13 +51,12 @@ public class Payment {
         Payment payment = (Payment) o;
         return isComplete() == payment.isComplete() &&
                 getAmount() == payment.getAmount() &&
-                getDate().equals(payment.getDate()) &&
-                getOrderId().equals(payment.getOrderId());
+                getDate().equals(payment.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAmount(), getDate(), isComplete(), getOrderId());
+        return Objects.hash(getAmount(), getDate(), isComplete());
     }
 
     public static class PaymentBuilder {
@@ -72,7 +64,6 @@ public class Payment {
         private long amount;
         private LocalDate date;
         private boolean isComplete;
-        private Long orderId;
 
         private PaymentBuilder() {
         }
@@ -82,7 +73,6 @@ public class Payment {
             this.amount =payment. amount;
             this.date =payment. date;
             this.isComplete =payment. isComplete;
-            this.orderId =payment. orderId;
         }
 
         public Payment build() {
@@ -106,11 +96,6 @@ public class Payment {
 
         public PaymentBuilder withComplete(boolean complete) {
             isComplete = complete;
-            return this;
-        }
-
-        public PaymentBuilder withOrderId(Long orderId) {
-            this.orderId = orderId;
             return this;
         }
     }

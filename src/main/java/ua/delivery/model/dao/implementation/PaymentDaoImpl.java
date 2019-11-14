@@ -12,13 +12,12 @@ import java.util.Optional;
 public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implements PaymentDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * from payments WHERE id = ?";
     private static final String SAVE_QUERY =
-            "INSERT INTO payments(order_id, amount, date, is_complete)";
+            "INSERT INTO payments(amount, date, is_complete) VALUES(?, ?, ?)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM payments";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM payments Where id = ?";
     private static final String UPDATE_QUERY =
             "UPDATE payments SET order_id = ?, amount = ?, date = ?, is_complete =? WHERE id= ?";
-    private static final String FIND_BY_ORDER_ID =
-            "SELECT * FROM payments WHERE order_id= ?";
+    private static final String FIND_BY_ORDER_ID = "SELECT * FROM payments WHERE order_id= ?";
 
     public PaymentDaoImpl() {
         super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
@@ -33,7 +32,6 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
     protected PaymentEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
         return PaymentEntity.builder()
                 .withId(resultSet.getLong("id"))
-                .withOrderId(resultSet.getLong("order_id"))
                 .withAmount(resultSet.getLong("amount"))
                 .withDate(resultSet.getDate("date").toLocalDate())
                 .withComplete(resultSet.getBoolean("is_complete"))
@@ -42,10 +40,9 @@ public class PaymentDaoImpl extends AbstractCrudDaoImpl<PaymentEntity> implement
 
     @Override
     protected void insert(PreparedStatement preparedStatement, PaymentEntity item) throws SQLException {
-        preparedStatement.setLong(2, item.getOrderId());
-        preparedStatement.setDouble(3, item.getAmount());
-        preparedStatement.setDate(4, Date.valueOf(item.getDate()));
-        preparedStatement.setBoolean(5, item.isComplete());
+        preparedStatement.setDouble(1, item.getAmount());
+        preparedStatement.setDate(2, Date.valueOf(item.getDate()));
+        preparedStatement.setBoolean(3, item.isComplete());
     }
 
     @Override

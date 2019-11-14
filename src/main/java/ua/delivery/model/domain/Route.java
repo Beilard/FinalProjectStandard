@@ -5,12 +5,15 @@ import java.util.Objects;
 public class Route {
     private final Address origin;
     private final Address destination;
-    private int length;
+    private int distance;
 
     private Route(Address origin, Address destination) {
         this.origin = origin;
         this.destination = destination;
-        length = 0; //need to implement
+        switch (origin.getCity()){
+
+        }
+        distance = 0; //need to implement
     }
 
     public Address getOrigin() {
@@ -21,8 +24,8 @@ public class Route {
         return destination;
     }
 
-    public int getLength() {
-        return length;
+    public int getDistance() {
+        return distance;
     }
 
     @Override
@@ -34,14 +37,14 @@ public class Route {
             return false;
         }
         Route route = (Route) o;
-        return getLength() == route.getLength() &&
+        return getDistance() == route.getDistance() &&
                 getOrigin().equals(route.getOrigin()) &&
                 getDestination().equals(route.getDestination());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOrigin(), getDestination(), getLength());
+        return Objects.hash(getOrigin(), getDestination(), getDistance());
     }
 
     @Override
@@ -49,7 +52,7 @@ public class Route {
         return "Route{" +
                 "origin=" + origin +
                 ", destination=" + destination +
-                ", length=" + length +
+                ", length=" + distance +
                 '}';
     }
 }

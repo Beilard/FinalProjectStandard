@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class PackageDaoImpl extends AbstractCrudDaoImpl<PackageEntity> implements PackageDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * from packages WHERE id = ?";
     private static final String SAVE_QUERY =
-            "INSERT INTO packages(type, weight)";
+            "INSERT INTO packages(type, weight) VALUES(?, ?)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM packages";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM packages WHERE id = ?";
     private static final String UPDATE_QUERY =
@@ -28,8 +28,8 @@ public class PackageDaoImpl extends AbstractCrudDaoImpl<PackageEntity> implement
 
     @Override
     protected void insert(PreparedStatement preparedStatement, PackageEntity item) throws SQLException {
-        preparedStatement.setString(2, item.getType());
-        preparedStatement.setDouble(3, item.getWeight());
+        preparedStatement.setString(1, item.getType());
+        preparedStatement.setDouble(2, item.getWeight());
     }
 
     @Override

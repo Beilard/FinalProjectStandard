@@ -1,7 +1,6 @@
 package ua.delivery.model.service.implementation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.dao.PaymentDao;
 import ua.delivery.model.domain.Payment;
 import ua.delivery.model.service.PaymentService;
@@ -12,11 +11,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class PaymentServiceImpl implements PaymentService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(PaymentServiceImpl.class);
     private final PaymentDao paymentDao;
+    private final PaymentMapper paymentMapper;
 
-    public PaymentServiceImpl(PaymentDao paymentDao) {
+    public PaymentServiceImpl(PaymentDao paymentDao, PaymentMapper paymentMapper) {
         this.paymentDao = paymentDao;
+        this.paymentMapper = paymentMapper;
     }
 
     @Override
@@ -27,10 +28,9 @@ public class PaymentServiceImpl implements PaymentService {
         final Payment payment = Payment.builder()
                 .withAmount(amount)
                 .withComplete(false)
-                .withDate(LocalDate.now()) //wrap for tests
-                .withOrderId(orderId)
+                .withDate(LocalDate.now())
                 .build();
-        paymentDao.save(PaymentMapper.mapPaymentToEntity(payment));
+        paymentDao.save(paymentMapper.mapPaymentToEntity(payment));
         return Optional.of(payment);
     }
 

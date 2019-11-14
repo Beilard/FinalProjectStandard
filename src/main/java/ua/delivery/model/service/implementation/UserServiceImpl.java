@@ -1,13 +1,15 @@
 package ua.delivery.model.service.implementation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.entity.UserCredentialsEntity;
 import ua.delivery.model.entity.UserEntity;
-import ua.delivery.model.exception.*;
+import ua.delivery.model.exception.DataBaseRuntimeException;
+import ua.delivery.model.exception.EmailAlreadyTakenException;
+import ua.delivery.model.exception.EntityNotFoundException;
+import ua.delivery.model.exception.InvalidCredentialsException;
 import ua.delivery.model.service.UserService;
 import ua.delivery.model.service.encoder.PasswordEncoder;
 import ua.delivery.model.service.mapper.UserMapper;
@@ -19,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private final Validator loginValidator;
     private final Validator registrationValidator;
     private final UserDao userDao;
@@ -76,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(int start, int total) {
-        return userDao.findAll(start, total).stream()
+    public List<User> findAll() {
+        return userDao.findAll().stream()
                 .map(userMapper::mapEntityToUser)
                 .collect(Collectors.toList());
     }

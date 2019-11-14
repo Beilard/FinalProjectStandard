@@ -1,8 +1,6 @@
 package ua.delivery.model.service.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ua.delivery.model.dao.UserDao;
+import org.apache.log4j.Logger;
 import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.exception.EntityNotFoundException;
 import ua.delivery.model.exception.InvalidCredentialsException;
@@ -15,7 +13,7 @@ public class LoginValidator implements Validator<UserCredentials> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger("LoginValidator.class");
+    private final static Logger LOGGER = Logger.getLogger("LoginValidator.class");
 
     public LoginValidator() {
 

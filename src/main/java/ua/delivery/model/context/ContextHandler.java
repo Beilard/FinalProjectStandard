@@ -1,6 +1,7 @@
 package ua.delivery.model.context;
 
 import ua.delivery.controller.command.Command;
+import ua.delivery.controller.command.DefaultCommand;
 import ua.delivery.controller.command.guest.LoginCommand;
 import ua.delivery.controller.command.guest.LogoutCommand;
 import ua.delivery.controller.command.guest.RegisterCommand;
@@ -28,8 +29,9 @@ public class ContextHandler {
     private static final Command LOGIN_COMMAND = new LoginCommand(USER_SERVICE);
     private static final Command LOGOUT_COMMAND = new LogoutCommand();
     private static final Command REGISTER_COMMAND = new RegisterCommand(USER_SERVICE);
+    private static final Command DEFAULT_COMMAND = new DefaultCommand();
     private static final Map<String, Command> GUEST_COMMAND_NAME_TO_COMMAND = initGuestCommand();
-    private static final Command DEFAULT_COMMAND = REGISTER_COMMAND;
+
 
 
     private static ContextHandler contextHandler;

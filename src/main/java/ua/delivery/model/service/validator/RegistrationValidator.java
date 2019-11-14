@@ -1,7 +1,6 @@
 package ua.delivery.model.service.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
 import ua.delivery.model.exception.EntityNotFoundException;
@@ -10,7 +9,7 @@ import ua.delivery.model.exception.InvalidCredentialsException;
 import java.util.Objects;
 
 public class RegistrationValidator implements Validator<User> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationValidator.class);
+    private static final Logger LOGGER = Logger.getLogger(RegistrationValidator.class);
 
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";

@@ -9,7 +9,8 @@ public class Order {
     private final Long packageId;
     private final Long paymentId;
     private final Long senderId;
-    private final Long receiverId;
+    private final String recipientName;
+    private final String recipientSurname;
     private final LocalDate sentDate;
     private final LocalDate receiveDate;
     private final Long routeId;
@@ -22,7 +23,8 @@ public class Order {
         this.sentDate = orderBuilder.sentDate;
         this.receiveDate = orderBuilder.receiveDate;
         this.senderId = orderBuilder.senderId;
-        this.receiverId = orderBuilder.receiverId;
+        this.recipientName = orderBuilder.recipientName;
+        this.recipientSurname=orderBuilder.recipientSurname;
     }
 
     public static OrderBuilder builder() {
@@ -58,8 +60,12 @@ public class Order {
         return senderId;
     }
 
-    public Long getReceiverId() {
-        return receiverId;
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public String getRecipientSurname() {
+        return recipientSurname;
     }
 
     @Override
@@ -88,7 +94,8 @@ public class Order {
         private Long packageId;
         private Long paymentId;
         private Long senderId;
-        private Long receiverId;
+        private String recipientName;
+        private String recipientSurname;
         private LocalDate sentDate;
         private LocalDate receiveDate;
         private Long routeId;
@@ -111,8 +118,13 @@ public class Order {
             return this;
         }
 
-        public OrderBuilder withReceiverId(Long receiverId) {
-            this.receiverId = receiverId;
+        public OrderBuilder withRecipientName(String recipientName) {
+            this.recipientName = recipientName;
+            return this;
+        }
+
+        public OrderBuilder withRecipientSurname(String recipientSurname) {
+            this.recipientSurname = recipientSurname;
             return this;
         }
 
@@ -137,6 +149,11 @@ public class Order {
         }
 
         public OrderBuilder withRoute(Long routeId) {
+            this.routeId = routeId;
+            return this;
+        }
+
+        public OrderBuilder withRouteId(Long routeId) {
             this.routeId = routeId;
             return this;
         }

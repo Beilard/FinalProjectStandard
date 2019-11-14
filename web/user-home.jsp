@@ -10,6 +10,7 @@
 <head>
     <title>Title</title>
 </head>
+<jsp:include page="user-bar.jsp" />
 THIS IS USER HOMEPAGE
 <body>
 

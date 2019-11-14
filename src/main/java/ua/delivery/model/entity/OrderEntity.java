@@ -8,7 +8,8 @@ public class OrderEntity {
     private final Long packageId;
     private final Long paymentId;
     private final Long senderId;
-    private final Long receiverId;
+    private final String recipientName;
+    private final String recipientSurname;
     private final LocalDate sentDate;
     private final LocalDate receiveDate;
     private final Long routeId;
@@ -21,7 +22,9 @@ public class OrderEntity {
         this.sentDate = orderEntityBuilder.sentDate;
         this.receiveDate = orderEntityBuilder.receiveDate;
         this.senderId = orderEntityBuilder.senderId;
-        this.receiverId = orderEntityBuilder.receiverId;
+        this.recipientName = orderEntityBuilder.recipientName;
+        this.recipientSurname=orderEntityBuilder.recipientSurname;
+
     }
 
     public static OrderEntityBuilder builder() {
@@ -56,8 +59,16 @@ public class OrderEntity {
         return senderId;
     }
 
-    public Long getReceiverId() {
-        return receiverId;
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public String getRecipientSurname() {
+        return recipientSurname;
+    }
+
+    public Long getRouteId() {
+        return routeId;
     }
 
     @Override
@@ -86,11 +97,11 @@ public class OrderEntity {
         private Long packageId;
         private Long paymentId;
         private Long senderId;
-        private Long receiverId;
+        private String recipientName;
+        private String recipientSurname;
         private LocalDate sentDate;
         private LocalDate receiveDate;
         private Long routeId;
-
 
         public OrderEntityBuilder() {
         }
@@ -106,11 +117,6 @@ public class OrderEntity {
 
         public OrderEntityBuilder withSenderId(Long senderId) {
             this.senderId = senderId;
-            return this;
-        }
-
-        public OrderEntityBuilder withReceiverId(Long receiverId) {
-            this.receiverId = receiverId;
             return this;
         }
 
@@ -135,6 +141,21 @@ public class OrderEntity {
         }
 
         public OrderEntityBuilder withRoute(Long routeId) {
+            this.routeId = routeId;
+            return this;
+        }
+
+        public OrderEntityBuilder withRecipientName(String recipientName) {
+            this.recipientName = recipientName;
+            return this;
+        }
+
+        public OrderEntityBuilder withRecipientSurname(String recipientSurname) {
+            this.recipientSurname = recipientSurname;
+            return this;
+        }
+
+        public OrderEntityBuilder withRouteId(Long routeId) {
             this.routeId = routeId;
             return this;
         }

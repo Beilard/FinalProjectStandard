@@ -2,10 +2,15 @@ package ua.delivery.model.service;
 
 import ua.delivery.model.domain.Order;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    Optional<Order> createOrder();
+    void createOrder(Order order);
 
-    Optional<Order> finishOrder(Order order);
+    void finishOrder(Order order);
+
+    List<Order> displayAllBySender(Long id);
+
+    List<Order> displayAll();
 }

@@ -1,7 +1,6 @@
 package ua.delivery.model.dao.implementation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.dao.UserDao;
 import ua.delivery.model.domain.Role;
 import ua.delivery.model.entity.UserCredentialsEntity;
@@ -14,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class UserDaoImpl extends AbstractCrudDaoImpl<UserEntity> implements UserDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractCrudDaoImpl.class);
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * from users WHERE email = ?";
     private static final String FIND_BY_ID_QUERY = "SELECT * from users WHERE id = ?";
     private static final String SAVE_QUERY =

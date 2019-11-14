@@ -1,7 +1,6 @@
 package ua.delivery.model.service.encoder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -19,7 +18,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class PasswordEncoder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PasswordEncoder.class);
+    private static final Logger LOGGER = Logger.getLogger(PasswordEncoder.class);
     private final static String SECRET_KEY = "boooooooooom!!!!";
     private final static String SALT = "ssshhhhhhhhhhh!!!!";
 

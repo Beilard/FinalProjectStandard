@@ -1,17 +1,22 @@
 package ua.delivery.model.dao.implementation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import ua.delivery.model.dao.CrudDao;
 import ua.delivery.model.dao.DBConnector;
 import ua.delivery.model.exception.DataBaseRuntimeException;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractCrudDaoImpl.class);
     private static final BiConsumer<PreparedStatement, String> STRING_CONSUMER
             = (PreparedStatement pr, String param) -> {
         try {
@@ -64,10 +69,9 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
     }
 
     @Override
-    public List<E> findAll(int start, int total) {
+    public List<E> findAll() {
         try (Connection connection = DBConnector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery +
-                     " LIMIT " + (start - 1) + "," + total)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery)) {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<E> entities = new ArrayList<>();
                 while (resultSet.next()) {

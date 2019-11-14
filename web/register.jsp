@@ -59,15 +59,15 @@
         <input type="hidden" name="command" value="register" />
         <h2><fmt:message key="register.start"/></h2>
         <div class="form-group">
-            <label for="firstName" class="col-sm-3 control-label" ><fmt:message key="register.name"/></label>
+            <label for="name" class="col-sm-3 control-label" ><fmt:message key="register.name"/></label>
             <div class="col-sm-9">
-                <input type="text" id="firstName" name = "name" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.name"/> class="form-control" autofocus required>
+                <input type="text" id="name" name = "name" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.name"/> class="form-control" autofocus required>
             </div>
         </div>
         <div class="form-group">
-            <label for="lastName" class="col-sm-3 control-label"><fmt:message key="register.surname"/></label>
+            <label for="surname" class="col-sm-3 control-label"><fmt:message key="register.surname"/></label>
             <div class="col-sm-9">
-                <input type="text" id="lastName" name = "surname" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.surname"/> class="form-control" autofocus required>
+                <input type="text" id="surname" name = "surname" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.surname"/> class="form-control" autofocus required>
             </div>
         </div>
         <div class="form-group">
