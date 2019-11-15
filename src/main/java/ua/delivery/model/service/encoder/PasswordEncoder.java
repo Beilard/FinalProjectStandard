@@ -22,7 +22,7 @@ public class PasswordEncoder {
     private final static String SECRET_KEY = "boooooooooom!!!!";
     private final static String SALT = "ssshhhhhhhhhhh!!!!";
 
-    public static String encrypt(String strToEncrypt) {
+    public String encrypt(String strToEncrypt) {
         try {
             Cipher cipher = getCipher("AES/CBC/PKCS5Padding", Cipher.ENCRYPT_MODE);
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public class PasswordEncoder {
         return null;
     }
 
-    public static String decrypt(String strToDecrypt) {
+    public String decrypt(String strToDecrypt) {
         try
         {
             Cipher cipher = getCipher("AES/CBC/PKCS5PADDING", Cipher.DECRYPT_MODE);
@@ -44,7 +44,7 @@ public class PasswordEncoder {
         return null;
     }
 
-    private static Cipher getCipher(String s, int decryptMode) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    private Cipher getCipher(String s, int decryptMode) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         IvParameterSpec ivspec = new IvParameterSpec(iv);
 

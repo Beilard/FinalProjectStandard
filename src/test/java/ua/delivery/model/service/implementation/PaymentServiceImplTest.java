@@ -1,7 +1,9 @@
 package ua.delivery.model.service.implementation;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,13 +30,18 @@ public class PaymentServiceImplTest {
         reset(paymentDao);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
     public void createPaymentShouldThrowIllegalArgumentId() {
+        exception.expect(IllegalArgumentException.class);
         paymentService.createPayment(-1L, 10);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void createPaymentShouldThrowIllegalArgumentAmount() {
+        exception.expect(IllegalArgumentException.class);
         paymentService.createPayment(1L, -1);
     }
 
@@ -46,14 +53,14 @@ public class PaymentServiceImplTest {
                 .withAmount(amount)
                 .withComplete(false)
                 .withDate(LocalDate.now())
-                .withOrderId(id)
                 .build();
         Optional<Payment> payment = paymentService.createPayment(id, amount);
         assertEquals(Optional.of(expected), payment);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void completePaymentShouldThrowNull() {
+        exception.expect(IllegalArgumentException.class);
         paymentService.completePayment(null);
     }
 
@@ -63,7 +70,6 @@ public class PaymentServiceImplTest {
                 .withAmount(10)
                 .withComplete(false)
                 .withDate(LocalDate.now())
-                .withOrderId(1L)
                 .build();
         Optional<Payment> expected = paymentService.completePayment(payment);
 

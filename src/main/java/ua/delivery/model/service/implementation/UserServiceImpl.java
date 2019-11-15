@@ -13,6 +13,8 @@ import ua.delivery.model.exception.InvalidCredentialsException;
 import ua.delivery.model.service.UserService;
 import ua.delivery.model.service.encoder.PasswordEncoder;
 import ua.delivery.model.service.mapper.UserMapper;
+import ua.delivery.model.service.validator.LoginValidator;
+import ua.delivery.model.service.validator.RegistrationValidator;
 import ua.delivery.model.service.validator.Validator;
 
 import java.util.List;
@@ -22,16 +24,19 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-    private final Validator loginValidator;
-    private final Validator registrationValidator;
+    private final LoginValidator loginValidator;
+    private final RegistrationValidator registrationValidator;
     private final UserDao userDao;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(Validator registrationValidator, Validator loginValidator, UserDao userDao, UserMapper userMapper) {
+    public UserServiceImpl(RegistrationValidator registrationValidator, LoginValidator loginValidator,
+                           UserDao userDao, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.loginValidator = loginValidator;
         this.registrationValidator = registrationValidator;
         this.userDao = userDao;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 .withName(user.getName())
                 .withSurname(user.getSurname())
                 .withUserCredentials(new UserCredentialsEntity(user.getUserCredentials().getEmail(),
-                        PasswordEncoder.encrypt(user.getUserCredentials().getPassword())))
+                        passwordEncoder.encrypt(user.getUserCredentials().getPassword())))
                 .withRole(user.getRole())
                 .build();
 
@@ -65,7 +70,7 @@ public class UserServiceImpl implements UserService {
         }
         String dbPassword = null;
         try {
-            dbPassword = PasswordEncoder.decrypt(user.get().getUserCredentials().getPassword());
+            dbPassword = passwordEncoder.decrypt(user.get().getUserCredentials().getPassword());
         } catch (RuntimeException e) {
             LOGGER.error("User has no password: " + user);
             throw new DataBaseRuntimeException(e);

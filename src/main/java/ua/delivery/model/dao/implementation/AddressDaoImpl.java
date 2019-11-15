@@ -24,7 +24,7 @@ public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implement
             "UPDATE addresses SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
     private static final String FIND_ALL_BY_CITY = "SELECT * FROM addresses WHERE city = ?";
 
-    public AddressDaoImpl(DBConnector connector) {
+    public AddressDaoImpl() {
         super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 

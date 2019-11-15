@@ -16,7 +16,7 @@ public class GuestServlet extends HttpServlet {
 
     public GuestServlet() {
         ContextHandler contextHandler = ContextHandler.getInstance();
-        this.nameToCommand = contextHandler.getUserCommandsMap();
+        this.nameToCommand = contextHandler.getGuestCommandsMap();
         this.defaultCommand = contextHandler.getDefaultCommand();
     }
 

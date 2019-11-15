@@ -17,7 +17,7 @@ public class AdminServlet extends HttpServlet {
 
     public AdminServlet() {
         ContextHandler contextHandler = ContextHandler.getInstance();
-        this.nameToCommand = contextHandler.getUserCommandsMap();
+        this.nameToCommand = contextHandler.getGuestCommandsMap();
         this.defaultCommand = contextHandler.getDefaultCommand();
     }
 

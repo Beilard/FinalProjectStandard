@@ -59,33 +59,33 @@
         <input type="hidden" name="command" value="register" />
         <h2><fmt:message key="register.start"/></h2>
         <div class="form-group">
-            <label for="name" class="col-sm-3 control-label" ><fmt:message key="register.name"/></label>
+            <label for="name" class="col-sm-6 control-label" ><fmt:message key="register.name"/></label>
             <div class="col-sm-9">
                 <input type="text" id="name" name = "name" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.name"/> class="form-control" autofocus required>
             </div>
         </div>
         <div class="form-group">
-            <label for="surname" class="col-sm-3 control-label"><fmt:message key="register.surname"/></label>
+            <label for="surname" class="col-sm-6 control-label"><fmt:message key="register.surname"/></label>
             <div class="col-sm-9">
                 <input type="text" id="surname" name = "surname" pattern="([A-Z])([a-z]{1,12})" minlength="2" maxlength="15" placeholder=<fmt:message key="register.inner.surname"/> class="form-control" autofocus required>
             </div>
         </div>
         <div class="form-group">
-            <label for="email" type="email" class="col-sm-3 control-label"><fmt:message key="register.email"/> </label>
+            <label for="email" type="email" class="col-sm-6 control-label"><fmt:message key="register.email"/> </label>
             <div class="col-sm-9">
                 <input type="email" id="email" name = "email" placeholder=<fmt:message key="register.inner.email"/> class="form-control" required>
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="col-sm-3 control-label"><fmt:message key="register.password"/></label>
+            <label for="password" class="col-sm-6 control-label"><fmt:message key="register.password"/></label>
             <div class="col-sm-9">
                 <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" placeholder=<fmt:message key="register.inner.password"/> class="form-control" required>
             </div>
         </div>
         <div class="form-group">
-            <label for="confirmdPassword" class="col-sm-3 control-label"><fmt:message key="register.confirm"/></label>
+            <label for="confirmPassword" class="col-sm-6 control-label"><fmt:message key="register.confirm"/></label>
             <div class="col-sm-9">
-                <input type="password" id="confirmdPassword" name = "confirmPassword" placeholder=<fmt:message key="register.inner.password"/> class="form-control" required>
+                <input type="password" id="confirmPassword" name = "confirmPassword" placeholder=<fmt:message key="register.inner.password"/> class="form-control" required>
             </div>
         </div>
         <div class="form-group">

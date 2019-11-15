@@ -3,11 +3,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="${param.lang}" scope="session"/>
-<fmt:setBundle basename="labels" scope="session"/>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="language" scope="session"/>
 
 <!DOCTYPE html>
-<html lang="${param.lang}">
+<html lang="${param.language}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,11 +55,11 @@
                 <a class="nav-link" href="register.jsp"><label><fmt:message key="nav.bar.register"/></label></a>
                 <form style="position:absolute; right:73px;">
                     <label class="nav-link">
-                        <select class="nav-link" id="lang" name="lang" onchange="submit()">
-                            <option class="bg-secondary text-white" value="en" ${param.lang == 'en' ? 'selected' : ''}>
+                        <select class="nav-link" id="language" name="language" onchange="submit()">
+                            <option class="bg-secondary text-white" value="en" ${language == 'en' ? 'selected' : ''}>
                                 English
                             </option>
-                            <option class="bg-secondary text-white" value="ru" ${param.lang  == 'ru' ? 'selected' : ''}>
+                            <option class="bg-secondary text-white" value="ru" ${language  == 'ru' ? 'selected' : ''}>
                                 Russian
                             </option>
                         </select>

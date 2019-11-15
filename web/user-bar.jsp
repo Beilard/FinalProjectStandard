@@ -23,18 +23,33 @@
 <div class="container-fluid">
 </div>
 <nav class="navbar navbar-expand-sm bg-light">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#"><label><fmt:message key="user.bar.logout"/></label> 1</a>
+    <ul class="navbar-nav" style="width: 100%">
+        <li class="nav-item" style="margin-right: 100px;">
+            <form action="user" method="get">
+                <input type="hidden" name="command" value="startOrder"/>
+                <button type="submit" class="btn btn-primary btn-block"><fmt:message key="user.bar.order"/></button>
+            </form>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"><label><fmt:message key="nav.bar.feature"/></label> 2</a>
+        <li class="nav-item" style="margin-right: 100px;">
+            <form action="user" method="get">
+                <input type="hidden" name="command" value="startOrder"/>
+                <button type="submit" class="btn btn-primary btn-block"><fmt:message key="user.bar.pay"/></button>
+            </form>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"><label><fmt:message key="user.bar.logout"/></label> 3</a>
+        <li class="nav-item" style="margin-right: 100px;">
+            <form action="guest" method="get">
+                <input type="hidden" name="command" value="logout"/>
+                <button type="submit" class="btn btn-primary btn-block"><fmt:message key="user.bar.logout"/></button>
+            </form>
         </li>
+
+        <nav class="navbar" style="position: absolute; right: 0;">
+            <form class="form-inline" action="">
+                <input class="form-control" type="text" placeholder="Order">
+                <button class="btn btn-success" type="submit">Order</button>
+            </form>
+        </nav>
     </ul>
 </nav>
-<br>
 </body>
 </html>
