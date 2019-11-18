@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implements AddressDao {
     private static final Logger LOGGER = Logger.getLogger(AddressDaoImpl.class);
@@ -23,9 +25,27 @@ public class AddressDaoImpl extends AbstractCrudDaoImpl<AddressEntity> implement
     private static final String UPDATE_QUERY =
             "UPDATE addresses SET email =?, password=?, name=?, surname=?, date_of_birth =? WHERE id = ?";
     private static final String FIND_ALL_BY_CITY = "SELECT * FROM addresses WHERE city = ?";
+    private static final String FIND_ALL_CITIES = "SELECT DISTINCT city FROM addresses";
 
     public AddressDaoImpl() {
         super(SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    }
+
+    @Override
+    public Set<String> findAllCities() {
+        Set<String> cities = new HashSet<>();
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_CITIES)) {
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    cities.add(resultSet.getString(1));
+                }
+                return cities;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("There has been an error while getting set of cities");
+            throw new DataBaseRuntimeException(e);
+        }
     }
 
     @Override

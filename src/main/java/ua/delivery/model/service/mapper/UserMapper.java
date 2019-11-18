@@ -11,7 +11,7 @@ public class UserMapper {
                 .withId(userEntity.getId())
                 .withName(userEntity.getName())
                 .withSurname(userEntity.getSurname())
-                .withUserCredentials(new UserCredentials(userEntity.getUserCredentials().getEmail(), userEntity.getUserCredentials().getPassword()))
+                .withUserCredentials(getUserCredentials(userEntity.getUserCredentials().getEmail(), userEntity.getUserCredentials().getPassword()))
                 .withRole(userEntity.getRole())
                 .build();
     }
@@ -21,8 +21,16 @@ public class UserMapper {
                 .withId(user.getId())
                 .withName(user.getName())
                 .withSurname(user.getSurname())
-                .withUserCredentials(new UserCredentialsEntity(user.getUserCredentials().getEmail(), user.getUserCredentials().getPassword()))
+                .withUserCredentials(getUserCredentialsEntity(user.getUserCredentials().getEmail(), user.getUserCredentials().getPassword()))
                 .withRole(user.getRole())
                 .build();
+    }
+
+    private UserCredentials getUserCredentials(String email, String password) {
+        return new UserCredentials(email, password);
+    }
+
+    private UserCredentialsEntity getUserCredentialsEntity(String email, String password) {
+        return new UserCredentialsEntity(email, password);
     }
 }

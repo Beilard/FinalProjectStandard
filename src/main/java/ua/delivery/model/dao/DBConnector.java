@@ -11,9 +11,10 @@ import java.util.ResourceBundle;
 
 public class DBConnector {
     private static final Logger LOGGER = Logger.getLogger(DBConnector.class);
-    private static BasicDataSource dataSource = new BasicDataSource();
+    private static BasicDataSource dataSource;
 
     static {
+        dataSource = new BasicDataSource();
         final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
         dataSource.setDriverClassName(resourceBundle.getString("db.driver"));
         dataSource.setUrl(resourceBundle.getString("db.url"));

@@ -1,6 +1,8 @@
 package ua.delivery.model.service.validator;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import ua.delivery.model.domain.Role;
 import ua.delivery.model.domain.User;
 import ua.delivery.model.domain.UserCredentials;
@@ -11,10 +13,17 @@ import static org.junit.Assert.*;
 
 public class RegistrationValidatorTest {
     private static final Long ID = 0L;
+
     private static final String NAME = "Ivan";
+
     private static final String SURNAME = "Popov";
+
     private static final String EMAIL = "Ivan@mail.com";
+
     private static final String PASSWORD = "Qwerty123#";
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private final RegistrationValidator registrationValidator = new RegistrationValidator();
 
@@ -33,18 +42,21 @@ public class RegistrationValidatorTest {
         registrationValidator.validate(getUser(EMAIL, PASSWORD));
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void validateNullPassed() {
+        exception.expect(EntityNotFoundException.class);
         registrationValidator.validate(null);
     }
 
-    @Test(expected = InvalidCredentialsException.class)
+    @Test
     public void validateShouldThrowDueToWrongEmail() {
+        exception.expect(InvalidCredentialsException.class);
         registrationValidator.validate(getUser("123", PASSWORD));
     }
 
-    @Test(expected = InvalidCredentialsException.class)
+    @Test
     public void validateShouldThrowDueToWrongPassword() {
+        exception.expect(InvalidCredentialsException.class);
         registrationValidator.validate(getUser(EMAIL, "123"));
     }
 

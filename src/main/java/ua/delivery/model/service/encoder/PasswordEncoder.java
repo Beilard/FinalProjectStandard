@@ -19,6 +19,7 @@ import java.util.Base64;
 
 public class PasswordEncoder {
     private static final Logger LOGGER = Logger.getLogger(PasswordEncoder.class);
+
     private final static String SECRET_KEY = "boooooooooom!!!!";
     private final static String SALT = "ssshhhhhhhhhhh!!!!";
 

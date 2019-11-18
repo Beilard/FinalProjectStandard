@@ -24,7 +24,7 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("command");
-        Command command = this.nameToCommand.getOrDefault(action, this.defaultCommand);
+        Command command = nameToCommand.getOrDefault(action, defaultCommand);
 
         String page = command.execute(req);
         req.getRequestDispatcher(page).forward(req, resp);

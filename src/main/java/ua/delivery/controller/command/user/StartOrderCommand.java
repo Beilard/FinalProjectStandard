@@ -1,10 +1,10 @@
 package ua.delivery.controller.command.user;
 
 import ua.delivery.controller.command.Command;
-import ua.delivery.model.domain.Address;
 import ua.delivery.model.service.AddressService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StartOrderCommand implements Command {
@@ -16,12 +16,8 @@ public class StartOrderCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        List<Address> kyivList = addressService.findAllByCity("Kyiv");
-        List<Address> odessaList = addressService.findAllByCity("Odessa");
-        List<Address> lvivList = addressService.findAllByCity("Lviv");
-        request.getSession().setAttribute("kyivList", kyivList);
-        request.getSession().setAttribute("odessaList", odessaList);
-        request.getSession().setAttribute("lvivList", lvivList);
+        List<String> citiesList = new LinkedList<>(addressService.findAllCities());
+        request.getSession().setAttribute("citiesList", citiesList);
         return "order-service.jsp";
     }
 }

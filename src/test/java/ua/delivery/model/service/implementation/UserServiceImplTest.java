@@ -61,8 +61,8 @@ public class UserServiceImplTest {
 
     @Before
     public void setUp() {
-        when(userDao.findByEmail(EMAIL)).thenReturn(Optional.of(exampleEntity));
         List<UserEntity> entities = Collections.singletonList(exampleEntity);
+        when(userDao.findByEmail(EMAIL)).thenReturn(Optional.of(exampleEntity));
         when(userDao.findAll()).thenReturn(entities);
         when(userDao.findByEmail(EMAIL)).thenReturn(Optional.of(exampleEntity));
         when(userMapper.mapEntityToUser(exampleEntity)).thenReturn(initUser());

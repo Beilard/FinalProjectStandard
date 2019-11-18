@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
     private final OrderDao orderDao;
     private final OrderMapper orderMapper;
 
@@ -28,11 +29,6 @@ public class OrderServiceImpl implements OrderService {
             throw new ObjectNotFoundException("Null order provided");
         }
         orderDao.save(orderMapper.mapOrderToEntity(order));
-    }
-
-    @Override
-    public void finishOrder(Order order) {
-
     }
 
     @Override

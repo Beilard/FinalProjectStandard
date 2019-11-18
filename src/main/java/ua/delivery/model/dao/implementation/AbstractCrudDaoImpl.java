@@ -125,7 +125,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Long> {
                 return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
             }
         } catch (SQLException e) {
-            LOGGER.error("An error has occurred while finding by parameter" + param.toString(), e);
+            LOGGER.error("An error has occurred while finding by parameter " + param.toString(), e);
             throw new DataBaseRuntimeException(e);
         }
     }

@@ -24,11 +24,14 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
     private final LoginValidator loginValidator;
     private final RegistrationValidator registrationValidator;
+    private final PasswordEncoder passwordEncoder;
+
     private final UserDao userDao;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
+
 
     public UserServiceImpl(RegistrationValidator registrationValidator, LoginValidator loginValidator,
                            UserDao userDao, UserMapper userMapper, PasswordEncoder passwordEncoder) {
@@ -54,7 +57,6 @@ public class UserServiceImpl implements UserService {
                         passwordEncoder.encrypt(user.getUserCredentials().getPassword())))
                 .withRole(user.getRole())
                 .build();
-
         userDao.save(encodedEntity);
     }
 

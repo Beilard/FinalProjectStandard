@@ -1,6 +1,7 @@
 package ua.delivery.model.service.implementation;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,24 +11,29 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import ua.delivery.model.dao.PaymentDao;
 import ua.delivery.model.domain.Payment;
+import ua.delivery.model.service.mapper.PaymentMapper;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentServiceImplTest {
     @Mock
     private PaymentDao paymentDao;
 
+    @Mock
+    private PaymentMapper paymentMapper;
+
     @InjectMocks
     private PaymentServiceImpl paymentService;
 
     @After
     public void resetMocks() {
-        reset(paymentDao);
+        reset(paymentDao, paymentMapper);
     }
 
     @Rule

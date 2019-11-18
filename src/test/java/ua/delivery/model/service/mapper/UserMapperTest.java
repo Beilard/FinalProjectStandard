@@ -43,7 +43,7 @@ public class UserMapperTest {
     }
 
     @Test
-    public void mapUserToEntity() {
+    public void mapUserToEntityNormalBehaviour() {
         final User user = User.builder()
                 .withId(ID)
                 .withName(NAME)
@@ -56,7 +56,9 @@ public class UserMapperTest {
 
         assertThat("Id mapping has failed", userEntity.getId(), is(ID));
         assertThat("Name mapping has failed", userEntity.getName(), is(NAME));
-        assertThat("Credentials mapping has failed", userEntity.getUserCredentials(), is(new UserCredentials(EMAIL, PASSWORD)));
+        assertThat("Credentials mapping has failed", userEntity.getUserCredentials(), is(new UserCredentialsEntity(EMAIL, PASSWORD)));
         assertThat("Role mapping has failed", userEntity.getRole(), is(Role.USER));
     }
+
+
 }

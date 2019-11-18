@@ -14,16 +14,18 @@ public class RegistrationValidator implements Validator<User> {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final String PASSWORD_REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
-
     public RegistrationValidator() {
     }
 
     @Override
     public void validate(User user) {
+        if (Objects.isNull(user)) {
+            LOGGER.warn("Provided object to validate is null");
+            throw new EntityNotFoundException("Provided object is null");
+        }
         UserCredentials userCredential = user.getUserCredentials();
-
         if (Objects.isNull(userCredential)) {
-            LOGGER.warn("Provided credentials are null" );
+            LOGGER.warn("Provided credentials are null");
             throw new EntityNotFoundException("Provided object is null!");
         }
 

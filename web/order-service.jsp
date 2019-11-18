@@ -12,13 +12,18 @@
     <title>Order Service</title>
 </head>
 <body>
-THIS IS ORDER SERVICE
-<select name="category">
-    <c:forEach items="${kyivList}" var="category">
-        <option name="City" value="${category.street}">
-            ${category.buildingNumber}
-        </option>
-    </c:forEach>
-</select>
+<jsp:include page="user-bar.jsp" />
+
+<form action="/user">
+    <input style="position: absolute; display: none; top: -999px; left: -999px" type="text" class="hidden" name="command" value="">
+    <select name="category" onchange="submit()">
+        <c:forEach items="${citiesList}" var="category">
+            <option ${seletedCity == category ? 'selected' : ''} name="City" value="${category}">
+                    ${category}
+            </option>
+        </c:forEach>
+    </select>
+</form>
+
 </body>
 </html>
